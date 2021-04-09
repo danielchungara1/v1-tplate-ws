@@ -1,4 +1,4 @@
-# _Web Service API_
+# _Web API Service_
 ![alt text](https://raw.githubusercontent.com/danielchungara1/v1-tplate-ws/develop/mis/imgs/readme/postman.JPG?raw=true)
 
 ## Core technologies 
