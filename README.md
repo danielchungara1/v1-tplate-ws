@@ -22,7 +22,7 @@
 - JDK JRE 8
 - Maven 3
 - Postgres server
-- Database Client like DBeaver for create de database locally
+- Database Client like DBeaver for local database creation.
 
 ## Installation
 
