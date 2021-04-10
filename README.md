@@ -1,6 +1,6 @@
 # _Web API Service_
-![alt text](https://raw.githubusercontent.com/danielchungara1/v1-tplate-ws/develop/mis/imgs/readme/postman.JPG?raw=true)
-![alt text](https://raw.githubusercontent.com/danielchungara1/v1-tplate-ws/develop/mis/imgs/readme/swagger.JPG?raw=true)
+![alt text](https://raw.githubusercontent.com/danielchungara1/v1-tplate-ws/develop/src/main/resources/imgs/readme/postman.JPG?raw=true)
+![alt text](https://raw.githubusercontent.com/danielchungara1/v1-tplate-ws/develop/src/main/resources/imgs/readme/swagger.JPG?raw=true)
 
 ## Core technologies 
 - Java 8
