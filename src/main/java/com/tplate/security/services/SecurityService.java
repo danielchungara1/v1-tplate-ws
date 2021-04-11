@@ -3,6 +3,7 @@ package com.tplate.security.services;
 // External Dependencies
 import com.google.common.collect.ImmutableMap;
 import com.tplate.security.exceptions.*;
+import jdk.nashorn.internal.parser.Token;
 import lombok.extern.log4j.Log4j2;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,8 +81,8 @@ public class SecurityService {
             return ResponseEntityBuilder
                     .builder()
                     .ok()
-                    .message("Session started successfully.")
-                    .dto(user, UserLoggedDto.class)
+                    .message("User logged.")
+                    .dto(user, TokenDto.class)
                     .build();
 
         } catch (AuthenticationException e) {
@@ -214,40 +215,5 @@ public class SecurityService {
         }
     }
 
-    @Transactional
-    public ResponseEntity signUp(SingUpDto singUpDto) {
 
-        try {
-
-            // Validate dto
-            singUpDto.validate();
-
-            // Validate username existence
-            if (this.userRepository.existsByUsername(singUpDto.getUsername())) {
-                log.error("Username exists. {}", singUpDto.getUsername());
-                throw new UsernameExistsException();
-            }
-
-            // Save new user
-            User newUser = User.builder()
-                    .username(singUpDto.getUsername())
-                    .password(this.passwordEncoder.encode(singUpDto.getPassword()))
-                    .rol(this.rolRepository.findByName("ADMINISTRADOR").get())
-                    .build();
-            this.userRepository.save(newUser);
-
-            // Response
-            log.info("User was registered. {}", singUpDto.getUsername());
-            return ResponseEntityBuilder.builder()
-                    .ok()
-                    .message("User was registered.  " + newUser.getUsername())
-                    .build();
-
-        } catch (FormValidatorException | UsernameExistsException e) {
-            return ResponseEntityBuilder.buildConflict(e.getMessage());
-        } catch (Exception e) {
-            log.error("Something went wrong. {}, {}", e.getMessage(), e.getClass().getCanonicalName());
-            return ResponseEntityBuilder.buildSomethingWrong();
-        }
-    }
 }
