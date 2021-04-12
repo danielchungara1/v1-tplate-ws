@@ -16,6 +16,7 @@ class UserTest {
 
     @Test
     void generarHashingPassword() {
-       log.info(passwordEncoder.encode("terricola"));
+        final String PASSWORD = "";
+       log.info(passwordEncoder.encode(PASSWORD));
     }
 }
