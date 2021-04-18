@@ -57,7 +57,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         //Public and private Paths
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "*").permitAll()
-                .antMatchers("/api/security/login").permitAll()
+                .antMatchers("/api/v1/auth/token").permitAll()
                 .antMatchers("/api/security/sign-up").permitAll()
                 .antMatchers("/api/security/reset-password/*").permitAll()
                 // Disallow everything else..

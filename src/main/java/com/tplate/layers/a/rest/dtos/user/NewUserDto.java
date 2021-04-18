@@ -1,17 +1,22 @@
 package com.tplate.layers.a.rest.dtos.user;
 
-import com.tplate.old.exceptions.FormValidatorException;
-import com.tplate.layers.b.business.validators.FormValidator;
 import lombok.Data;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class NewUserDto {
-    private String username;
-    private String password;
 
-    public void validate() throws FormValidatorException {
-        FormValidator.evaluate()
-                .isRequired(this.username, "Username")
-                .isRequired(this.password, "Password");
-    }
+    @NotNull (message = "credentials is required")
+    @Valid
+    private CredentialsDto credentials;
+
+    @NotNull (message = "contact is required")
+    @Valid
+    private ContactDto contact;
+
+    @NotNull(message = "roleId is required")
+    private Long roleId;
+
 }

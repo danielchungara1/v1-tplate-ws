@@ -1,7 +1,0 @@
-CREATE TABLE ROL_PERMISSIONS
-(
-    ID            BIGSERIAL PRIMARY KEY,
-    ID_ROL        BIGINT,
-    ID_PERMISSION BIGINT,
-    CONSTRAINT rol_permissions_unique_idRol_idPermission UNIQUE (ID_ROL, ID_PERMISSION)
-);

@@ -35,12 +35,15 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
             response.getWriter().write(JsonUtil.convertObjectToJson(r.getBody()));
 
         } catch (Exception e){
+
+            e.printStackTrace();
+
             log.error("JWT exception. {}", e.getClass().getCanonicalName());
 
             response.setContentType("application/json");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
-            ResponseEntity r = ResponseBuilder.buildBadRequest(StringUtil.truncate(e.getMessage(), ":"));
+            ResponseEntity r = ResponseBuilder.buildInternalServerError("Internal server error. Details: " + e.getClass().getCanonicalName());
             response.getWriter().write(JsonUtil.convertObjectToJson(r.getBody()));
 
         }

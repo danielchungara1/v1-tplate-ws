@@ -24,16 +24,16 @@ public class SecurityController {
         return this.securityService.loguear(loginDto);
     }
 
-    // Reset Password Step 1
-    @PostMapping("/password/reset_code")
-    public ResponseEntity resetPassword(@RequestBody(required=true) ResetPasswordStep1Dto resetPasswordDto){
-        return this.securityService.resetPasswordStep1(resetPasswordDto);
-    }
-
-    // Reset Password Step 2
-    @PutMapping("/password")
-    public ResponseEntity resetPassword(@RequestBody(required=true) ResetPasswordStep2Dto resetPasswordDto){
-        return this.securityService.resetPasswordStep2(resetPasswordDto);
-    }
+//    // Reset Password Step 1
+//    @PostMapping("/password/reset_code")
+//    public ResponseEntity resetPassword(@RequestBody(required=true) ResetPasswordStep1Dto resetPasswordDto){
+//        return this.securityService.resetPasswordStep1(resetPasswordDto);
+//    }
+//
+//    // Reset Password Step 2
+//    @PutMapping("/password")
+//    public ResponseEntity resetPassword(@RequestBody(required=true) ResetPasswordStep2Dto resetPasswordDto){
+//        return this.securityService.resetPasswordStep2(resetPasswordDto);
+//    }
 
 }

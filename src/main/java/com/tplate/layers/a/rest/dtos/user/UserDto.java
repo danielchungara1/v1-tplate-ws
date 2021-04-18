@@ -1,11 +1,14 @@
 package com.tplate.layers.a.rest.dtos.user;
 
-import com.tplate.layers.b.business.validators.FormValidator;
-import com.tplate.old.exceptions.FormValidatorException;
 import lombok.Data;
+
+/**
+ * Output DTO. Must not have javax validation.
+ */
 
 @Data
 public class UserDto {
     private Long id;
-    private String username;
+    private ContactDto contact;
+    private CredentialsSimpleDto credentials;
 }

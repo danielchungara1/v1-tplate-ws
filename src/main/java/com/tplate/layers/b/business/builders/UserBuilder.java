@@ -1,26 +1,42 @@
 package com.tplate.layers.b.business.builders;
 
 import com.tplate.layers.a.rest.dtos.user.NewUserDto;
-import com.tplate.layers.b.business.models.User;
-import com.tplate.old.security.rol.RolRepository;
+import com.tplate.layers.b.business.exceptions.EmailExistException;
+import com.tplate.layers.b.business.exceptions.RoleNotFoundException;
+import com.tplate.layers.b.business.exceptions.UsernameExistException;
+import com.tplate.layers.b.business.services.ContactService;
+import com.tplate.layers.b.business.services.CredentialsService;
+import com.tplate.layers.b.business.services.RoleService;
+import com.tplate.layers.c.persistence.models.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserBuilder {
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    RoleService roleService;
 
     @Autowired
-    RolRepository rolRepository;
+    ContactService contactService;
 
-    public User buildFrom(NewUserDto dto){
+    @Autowired
+    CredentialsService credentialsService;
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    public User buildModelByDto(NewUserDto userDto) throws RoleNotFoundException, UsernameExistException, EmailExistException {
         return  User.builder()
-                .username(dto.getUsername())
-                .password(this.passwordEncoder.encode(dto.getPassword()))
-                .rol(this.rolRepository.findByName("ADMIN").get())
+                .role(this.roleService.getModelBy(userDto.getRoleId()))
+                .contact(this.contactService.buildModelBy(userDto.getContact()))
+                .credentials(this.credentialsService.modelFrom(userDto.getCredentials()))
                 .build();
+
+    }
+
+    public Object buildDto(User user, Class dtoClass) {
+        return this.modelMapper.map(user, dtoClass);
     }
 }

@@ -1,7 +1,6 @@
 package com.tplate.layers.b.business.builders;
 
 import com.tplate.layers.a.rest.dtos.ResponseDto;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -11,7 +10,7 @@ public class ResponseBuilder {
     private Object dto;
     private HttpStatus statusCode = HttpStatus.OK;
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+
 
     private ResponseBuilder(){}
 
@@ -24,8 +23,8 @@ public class ResponseBuilder {
         return this;
     }
 
-    public ResponseBuilder dto(Object entity, Class dtoClass) {
-        this.dto = modelMapper.map(entity, dtoClass);
+    public ResponseBuilder dto(Object object) {
+        this.dto = object;
         return this;
     }
 
@@ -101,15 +100,6 @@ public class ResponseBuilder {
                 .message("Something went wrong.")
                 .build();
     }
-
-    public static ResponseEntity buildSomethingWrong(String details) {
-        return ResponseBuilder
-                .builder()
-                .internalServerError()
-                .message("Something went wrong. " + details)
-                .build();
-    }
-
 
 //    **************************************************************************
 //    * Shortcuts Status Code

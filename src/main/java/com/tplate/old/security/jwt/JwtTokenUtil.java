@@ -3,7 +3,7 @@ package com.tplate.old.security.jwt;
 import com.tplate.old.models.Minutes;
 import com.tplate.old.security.constants.SecurityConstants;
 import com.tplate.old.util.TimeUtil;
-import com.tplate.layers.b.business.models.User;
+import com.tplate.layers.c.persistence.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -59,7 +59,7 @@ public class JwtTokenUtil {
                         .map(s -> new SimpleGrantedAuthority(s.getAuthority()))
                         .collect(Collectors.toList()));
         claims.put(SecurityConstants.JWT_USER_ID, user.getId());
-        return doGenerateToken(claims, user.getUsername());
+        return doGenerateToken(claims, user.getCredentials().getUsername());
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
@@ -90,7 +90,7 @@ public class JwtTokenUtil {
     }
 
     private Collection<? extends GrantedAuthority>  getAuthorities(User user) {
-        return user.getRol().getPermissions();
+        return user.getRole().getPermissions();
 
     }
 }
