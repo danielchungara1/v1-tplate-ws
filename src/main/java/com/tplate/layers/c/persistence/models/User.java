@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 
 @Entity
 @Table(name = "users")
@@ -26,6 +27,7 @@ public class User {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "contact_id")
+    @Valid
     private Contact contact;
 
     @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.PERSIST)

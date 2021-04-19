@@ -14,21 +14,10 @@ import org.springframework.stereotype.Service;
 public class RoleBuilder {
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
     RoleRepository roleRepository;
 
     @Autowired
     RoleValidator roleValidator;
-
-    @Autowired
-    CredentialsBuilder credentialsBuilder;
-
-    @Autowired
-    ContactBuilder contactBuilder;
-
-    private static final ModelMapper modelMapper = new ModelMapper();
 
     public Role buildModel(Long id) throws RoleNotFoundException {
 
@@ -38,7 +27,4 @@ public class RoleBuilder {
 
     }
 
-    public Object buildDto(User user, Class dtoClass) {
-        return modelMapper.map(user, dtoClass);
-    }
 }

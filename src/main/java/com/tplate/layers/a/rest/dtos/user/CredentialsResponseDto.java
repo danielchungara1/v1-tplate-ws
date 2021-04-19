@@ -7,7 +7,7 @@ import lombok.Data;
  */
 
 @Data
-public class CredentialsSimpleDto {
+public class CredentialsResponseDto {
 
     private String username;
 

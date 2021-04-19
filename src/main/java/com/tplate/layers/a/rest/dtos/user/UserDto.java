@@ -2,13 +2,21 @@ package com.tplate.layers.a.rest.dtos.user;
 
 import lombok.Data;
 
-/**
- * Output DTO. Must not have javax validation.
- */
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class UserDto {
-    private Long id;
+
+    @NotNull (message = "credentials is required")
+    @Valid
+    private CredentialsDto credentials;
+
+    @NotNull (message = "contact is required")
+    @Valid
     private ContactDto contact;
-    private CredentialsSimpleDto credentials;
+
+    @NotNull(message = "roleId is required")
+    private Long roleId;
+
 }

@@ -1,5 +1,6 @@
 package com.tplate.old.handlers;
 
+import com.tplate.layers.a.rest.dtos.SimpleResponseDto;
 import com.tplate.layers.b.business.builders.ResponseBuilder;
 import com.tplate.old.util.JsonUtil;
 import com.tplate.old.util.StringUtil;
@@ -31,8 +32,12 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.BAD_REQUEST.value());
 
-            ResponseEntity r = ResponseBuilder.buildBadRequest("Session has finished.");
-            response.getWriter().write(JsonUtil.convertObjectToJson(r.getBody()));
+            SimpleResponseDto simpleResponseDto = SimpleResponseDto.builder()
+                    .message("Session finished.")
+                    .details(e.getMessage())
+                    .build();
+
+            response.getWriter().write(JsonUtil.convertObjectToJson(simpleResponseDto));
 
         } catch (Exception e){
 
@@ -43,8 +48,12 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
-            ResponseEntity r = ResponseBuilder.buildInternalServerError("Internal server error. Details: " + e.getClass().getCanonicalName());
-            response.getWriter().write(JsonUtil.convertObjectToJson(r.getBody()));
+            SimpleResponseDto simpleResponseDto = SimpleResponseDto.builder()
+                    .message(e.getMessage())
+                    .details(e.getClass().getCanonicalName())
+                    .build();
+
+            response.getWriter().write(JsonUtil.convertObjectToJson(simpleResponseDto));
 
         }
     }

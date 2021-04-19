@@ -63,8 +63,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Disallow everything else..
                 .antMatchers("/api/user/*").authenticated();
         //Apply JWT
-        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(jwtExceptionHandlerFilter, JwtAuthorizationFilter.class);
+//        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtExceptionHandlerFilter, JwtAuthorizationFilter.class);
     }
 
     @Bean

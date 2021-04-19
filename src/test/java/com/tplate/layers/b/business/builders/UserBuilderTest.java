@@ -1,6 +1,6 @@
 package com.tplate.layers.b.business.builders;
 
-import com.tplate.layers.a.rest.dtos.user.NewUserDto;
+import com.tplate.layers.a.rest.dtos.user.UserDto;
 import com.tplate.layers.c.persistence.repositories.RoleRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.*;
@@ -22,7 +22,7 @@ class UserBuilderTest {
     @Autowired
     RoleRepository roleRepository;
 
-    private NewUserDto userDto;
+    private UserDto userDto;
 
     @BeforeAll
     public static void beforeAll(){}

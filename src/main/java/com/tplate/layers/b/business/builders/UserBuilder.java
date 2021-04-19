@@ -1,6 +1,6 @@
 package com.tplate.layers.b.business.builders;
 
-import com.tplate.layers.a.rest.dtos.user.NewUserDto;
+import com.tplate.layers.a.rest.dtos.user.UserDto;
 import com.tplate.layers.b.business.exceptions.EmailExistException;
 import com.tplate.layers.b.business.exceptions.RoleNotFoundException;
 import com.tplate.layers.b.business.exceptions.UsernameExistException;
@@ -24,19 +24,12 @@ public class UserBuilder {
     @Autowired
     CredentialsService credentialsService;
 
-    @Autowired
-    ModelMapper modelMapper;
-
-    public User buildModelByDto(NewUserDto userDto) throws RoleNotFoundException, UsernameExistException, EmailExistException {
+    public User buildModelByDto(UserDto userDto) throws RoleNotFoundException, UsernameExistException, EmailExistException {
         return  User.builder()
-                .role(this.roleService.getModelBy(userDto.getRoleId()))
-                .contact(this.contactService.buildModelBy(userDto.getContact()))
-                .credentials(this.credentialsService.modelFrom(userDto.getCredentials()))
+                .role(this.roleService.getModelById(userDto.getRoleId()))
+                .contact(this.contactService.newModelByDTO(userDto.getContact()))
+                .credentials(this.credentialsService.newModelByDTO(userDto.getCredentials()))
                 .build();
 
-    }
-
-    public Object buildDto(User user, Class dtoClass) {
-        return this.modelMapper.map(user, dtoClass);
     }
 }

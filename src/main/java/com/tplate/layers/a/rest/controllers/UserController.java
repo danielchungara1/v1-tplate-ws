@@ -2,20 +2,14 @@ package com.tplate.layers.a.rest.controllers;
 
 import com.tplate.layers.a.rest.controllers.shared.PathConstant;
 import com.tplate.layers.a.rest.dtos.ResponseDto;
-import com.tplate.layers.a.rest.dtos.user.NewUserDto;
-import com.tplate.layers.b.business.exceptions.EmailExistException;
-import com.tplate.layers.b.business.exceptions.RoleNotFoundException;
-import com.tplate.layers.b.business.exceptions.UsernameExistException;
+import com.tplate.layers.a.rest.dtos.user.UserDto;
+import com.tplate.layers.a.rest.dtos.user.UserResponseDto;
+import com.tplate.layers.b.business.exceptions.*;
 import com.tplate.layers.b.business.services.UserService;
-import com.tplate.layers.c.persistence.models.User;
-import com.tplate.layers.c.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(PathConstant.BASE_PATH + "/users")
@@ -24,32 +18,44 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserRepository userRepository;
-
     @PostMapping(value = "/new-user")
-    @PreAuthorize("hasAuthority('CREATE_USERS')")
-    public ResponseDto createUser(@RequestBody(required=true) @Valid NewUserDto newUserDto) throws  RoleNotFoundException, UsernameExistException, EmailExistException {
-        return this.userService.saveModelByDto(newUserDto);
+//    @PreAuthorize("hasAuthority('CREATE_USERS')")
+    public ResponseDto createUser(@RequestBody(required = true) @Valid UserDto userDto) throws RoleNotFoundException, UsernameExistException, EmailExistException, PasswordRequiredException {
+
+        // Password required
+        if (userDto.getCredentials().getPassword() == null) {
+            throw new PasswordRequiredException();
+        }
+
+        return ResponseDto.builder()
+                .message("User Registered.")
+                .details("User was registered successfully.")
+                .data(this.userService.saveModelByDto(userDto), UserResponseDto.class)
+                .build();
+
     }
 
-    @GetMapping(value = "")
-    public ResponseEntity getUsers() {
-        List<User> users = this.userService.getAll();
-        return new ResponseEntity(users, HttpStatus.OK);
-    }
-
-//    @GetMapping(value = "/{id}/profile")
-//    @PreAuthorize("hasAuthority('READ_USERS')")
-//    public ResponseEntity getProfile(@PathVariable Long id) throws UserNotFoundException {
-//        return this.userService.getProfile(id);
-//    }
-//
-//    @PutMapping(value = "/{id}/profile")
+    @PutMapping(value = "/{id}")
 //    @PreAuthorize("hasAuthority('UPDATE_USERS')")
-//    public ResponseEntity editProfile(@RequestBody(required=true) @Valid UserProfileDto userProfileDto,
-//                                @PathVariable Long id) throws UserExistException {
-//        return this.userService.editProfile(userProfileDto, id);
-//    }
+    public ResponseDto updateUser(@RequestBody(required = true) @Valid UserDto userDto, @PathVariable Long id) throws EmailExistException, ContactNotFoundException, UserNotFoundException, RoleNotFoundException, UsernameExistException, CredentialsNotFoundException {
+        return ResponseDto.builder()
+                .message("User updated.")
+                .details("User was updated successfully.")
+                .data(this.userService.updateModelByDto(userDto, id), UserResponseDto.class)
+                .build();
+
+    }
+
+    @GetMapping(value = "/{id}")
+//    @PreAuthorize("hasAuthority('READ_USERS')")
+    public ResponseDto getProfile(@PathVariable Long id) throws UserNotFoundException {
+        return ResponseDto.builder()
+                .message("User found")
+                .details("User found successfully")
+                .data(this.userService.getModelById(id), UserResponseDto.class)
+                .build();
+    }
+
+
 
 }

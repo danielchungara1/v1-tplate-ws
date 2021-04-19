@@ -36,7 +36,7 @@ public class ResponseBuilder {
     public ResponseEntity build() {
         ResponseDto responseDto = ResponseDto.builder()
                 .message(this.mesage)
-                .data(this.dto)
+//                .data(this.dto)
                 .build();
         return new ResponseEntity(responseDto, this.statusCode);
     }

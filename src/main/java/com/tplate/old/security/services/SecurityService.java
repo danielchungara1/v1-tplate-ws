@@ -1,6 +1,7 @@
 package com.tplate.old.security.services;
 
 // External Dependencies
+import com.tplate.layers.a.rest.dtos.ResponseDto;
 import com.tplate.layers.b.business.builders.UserBuilder;
 import com.tplate.old.exceptions.FormValidatorException;
 import com.tplate.old.security.dtos.LoginDto;
@@ -55,7 +56,6 @@ public class SecurityService {
     @Autowired
     UserBuilder userBuilder;
 
-    @Transactional
     public ResponseEntity loguear(LoginDto loginDto) {
 
         try {
@@ -76,12 +76,12 @@ public class SecurityService {
             log.info("User logged OK. {}", loginDto.getUsername());
 
             //Response
-            return ResponseBuilder
+            return ResponseEntity.ok(
+            ResponseDto
                     .builder()
-                    .ok()
                     .message("User logged.")
-                    .dto(this.userBuilder.buildDto(user, TokenDto.class))
-                    .build();
+                    .data(user, TokenDto.class)
+                    .build());
         } catch (AuthenticationException e) {
             return ResponseBuilder.buildConflict("Invalid Credentials.");
 

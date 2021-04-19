@@ -19,79 +19,21 @@ public class RoleService {
     @Autowired
     RoleValidator roleValidator;
 
-//    @Transactional
-//    public ResponseEntity editProfile(UserProfileDto userProfileDto, Long idUser) throws UserExistException {
-//
-//        // Validator responsibilities
-//        userValidator.validateMustNotExist(idUser);
-//
-//        // User Builder responsibilities
-//        User newUser = userBuilder.buildFrom(newUserDto);
-//
-//        // Persistence layer responsibilities
-//        User userCreated = this.userRepository.save(newUser);
-//
-//        // Response Builder responsibilities
-//        return ResponseBuilder.builder()
-//                .ok()
-//                .message("User registered.")
-//                .dto(userCreated, UserDto.class)
-//                .build();
-//
-//
-//
-//        try {
-//
-//            // Validate existence
-//            this.userRepository.findById(idUser).orElseThrow(UserNotFoundException::new);
-//
-//            // Save profile
-//            User user = this.userRepository.getOne(idUser);
-//            user.setName(userProfileDto.getName());
-//            user.setLastname(userProfileDto.getLastname());
-//            user.setPhone(userProfileDto.getPhone());
-//            user.setEmail(userProfileDto.getEmail());
-//            User user_ = this.userRepository.save(user);
-//
-//            // Response
-//            return ResponseBuilder.builder()
-//                    .ok()
-//                    .dto(user_, UserProfileDto.class)
-//                    .message("Profile edited.")
-//                    .build();
-//        } catch (UserNotFoundException e) {
-//            log.error("User not found. {}", e.getMessage());
-//            return ResponseBuilder.buildBadRequest(e.getMessage());
-//
-//        } catch (Exception e) {
-//            log.error("Something went wrong. {}, {}", e.getMessage(), e.getClass().getCanonicalName());
-//            return ResponseBuilder.buildSomethingWrong(e.getMessage());
-//        }
-//    }
-
-//    @Transactional
-//    public ResponseEntity getProfile(Long idUser) throws UserNotFoundException {
-//
-//        // Validate existence
-//        this.userRepository.findById(idUser).orElseThrow(UserNotFoundException::new);
-//
-//        // Get profile
-//        User user = this.userRepository.getOne(idUser);
-//
-//        // Response
-//        return ResponseBuilder.builder()
-//                .ok()
-//                .dto(user, UserProfileDto.class)
-//                .message("Profile.")
-//                .build();
-//    }
 
     @Transactional
-    public Role getModelBy(Long id)  throws RoleNotFoundException{
+    public Role getModelById(Long id)  throws RoleNotFoundException{
 
         this.roleValidator.guaranteeExistById(id);
 
         return this.roleRepository.getOne(id);
+    }
+
+    @Transactional
+    public void guaranteeExistById(Long id ) throws RoleNotFoundException {
+        if (!this.roleRepository.existsById(id)) {
+            log.error("Role not found. {}", id);
+            throw new RoleNotFoundException();
+        }
     }
 
 }
