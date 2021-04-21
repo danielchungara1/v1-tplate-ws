@@ -27,8 +27,8 @@ public class JwtUserDetailsImpl implements UserDetails {
         this.user.getRole().setPermissions(
                 new ArrayList<>(user.getRole().getPermissions())
         );
-        this.user.getCredentials().setUsername(user.getCredentials().getUsername());
-        this.user.getCredentials().setPassword(user.getCredentials().getPassword());
+        this.user.setUsername(user.getUsername());
+        this.user.setPassword(user.getPassword());
     }
 
 
@@ -39,12 +39,12 @@ public class JwtUserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getCredentials().getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getCredentials().getUsername();
+        return user.getUsername();
     }
 
     @Override

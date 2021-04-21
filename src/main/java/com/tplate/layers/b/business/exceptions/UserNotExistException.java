@@ -1,8 +1,8 @@
 package com.tplate.layers.b.business.exceptions;
 
-public class UserNotFoundException extends RestException {
+public class UserNotExistException extends BusinessException {
 
-    public UserNotFoundException() {
+    public UserNotExistException() {
         super("User not exists.", "The user ID sent is not recognized.");
     }
 }

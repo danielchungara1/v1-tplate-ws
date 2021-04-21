@@ -1,13 +1,17 @@
 package com.tplate.layers.b.business.services;
 
-import com.tplate.layers.b.business.builders.UserBuilder;
+import com.tplate.layers.a.rest.dtos.user.UserBaseDto;
+import com.tplate.layers.a.rest.dtos.user.UserNewDto;
 import com.tplate.layers.b.business.exceptions.*;
 import com.tplate.layers.b.business.validators.UserValidator;
 import com.tplate.layers.c.persistence.models.User;
-import com.tplate.layers.a.rest.dtos.user.UserDto;
+import com.tplate.layers.a.rest.dtos.user.UserUpdateDto;
 import com.tplate.layers.c.persistence.repositories.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,62 +26,86 @@ public class UserService {
     UserValidator userValidator;
 
     @Autowired
-    UserBuilder userBuilder;
-
-    @Autowired
     RoleService roleService;
 
     @Autowired
-    ContactService contactService;
+    PasswordEncoder passwordEncoder;
 
-    @Autowired
-    CredentialsService credentialsService;
 
-    /**
-     * Update model from DTO.
-     * Strategy: All fields are updated, null fields are permitted if DTO satisfy all validations.
-     * @param userDto
-     * @param idUser
-     * @return ResponseDto
-     * @throws RoleNotFoundException
-     * @throws UsernameExistException
-     * @throws EmailExistException
-     */
-    @Transactional (rollbackFor = {Exception.class})
-    public User updateModelByDto(UserDto userDto, Long idUser) throws EmailExistException, ContactNotFoundException, UserNotFoundException, UsernameExistException, CredentialsNotFoundException, RoleNotFoundException {
+    @Transactional(rollbackFor = Exception.class)
+    public User saveModel(UserNewDto dto) throws RoleNotExistException, UsernameExistException, EmailExistException {
 
-        User user = this.getModelById(idUser);
+        User user = User.builder().build();
 
-        this.contactService.updateModelByDTO(userDto.getContact(), user.getContact().getId());
-        this.credentialsService.updateModelByDTO(userDto.getCredentials(), user.getCredentials().getId());
-        this.updateRole(user, userDto.getRoleId());
+        // Password
+        user.setPassword(this.passwordEncoder.encode(dto.getPassword()));
 
-        return this.getModelById(idUser);
+        // Email
+        this.userValidator.guaranteeNotExistEmail(dto.getEmail());
+        user.setEmail(dto.getEmail());
+
+        // Username
+        this.userValidator.guaranteeNotExistUsername(dto.getUsername());
+        user.setUsername(dto.getUsername());
+
+        return this.saveOrUpdateModel(user, dto);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public User updateModel(UserUpdateDto dto, Long id) throws RoleNotExistException, UsernameExistException, EmailExistException, UserNotExistException {
+
+        User user = this.getModelById(id);
+
+        // Password Optional
+        if (dto.getPassword() != null) {
+            user.setPassword(this.passwordEncoder.encode(dto.getPassword()));
+        }
+
+        // Email False Positive.
+        if ( !this.userRepository.existsByEmail(dto.getEmail()) ) {
+            user.setEmail(dto.getEmail());
+        } else {
+            if (user.getEmail().equals(dto.getEmail())) {
+                // False Positive
+            } else {
+                this.userValidator.throwsEmailExistException();
+            }
+        }
+
+        // Username False Positive.
+        if ( !this.userRepository.existsByUsername(dto.getUsername()) ) {
+            user.setUsername(dto.getUsername());
+        } else {
+            if (user.getUsername().equals(dto.getUsername())) {
+                // False Positive
+            } else {
+                this.userValidator.throwsUsernameExistException();
+            }
+        }
+
+        return this.saveOrUpdateModel( user, dto );
+    }
+
+    @Transactional
+    public User saveOrUpdateModel(User user, UserBaseDto dto) throws RoleNotExistException {
+
+        user.setRole(this.roleService.getModelById(dto.getRoleId()));
+        user.setLastname(dto.getLastname());
+        user.setName(dto.getName());
+        user.setPhone(dto.getPhone());
+
+        return this.userRepository.save(user);
 
     }
 
-    /**
-     * Save model from DTO.
-     * @param newUserDto
-     * @return ResponseDto
-     * @throws RoleNotFoundException
-     * @throws UsernameExistException
-     * @throws EmailExistException
-     */
     @Transactional
-    public User saveModelByDto(UserDto newUserDto)
-            throws RoleNotFoundException, UsernameExistException, EmailExistException {
-
-        // Build Model
-        User newUser = this.userBuilder.buildModelByDto(newUserDto);
-
-        // Transaction
-        return this.userRepository.save(newUser);
-
+    public void deleteModelById(Long id) throws UserNotExistException {
+        this.userValidator.guaranteeExistById(id);
+        this.userRepository.deleteById(id);
     }
 
     @Transactional
-    public User getModelById(Long id) throws UserNotFoundException {
+    public User getModelById(Long id) throws UserNotExistException {
 
         this.userValidator.guaranteeExistById(id);
 
@@ -85,10 +113,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updateRole(User user, Long idRol) throws RoleNotFoundException {
-        this.roleService.guaranteeExistById(idRol);
-        user.setRole(this.roleService.getModelById(idRol));
-        return this.userRepository.save(user);
+    public Page findAll(Pageable pageable) {
+        return this.userRepository.findAll(pageable);
     }
-
 }

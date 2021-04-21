@@ -1,10 +1,8 @@
-package com.tplate.layers.b.business.exceptions.handlers;
+package com.tplate.handlers;
 
 import com.tplate.layers.a.rest.dtos.SimpleResponseDto;
-import com.tplate.layers.b.business.exceptions.RestException;
+import com.tplate.layers.b.business.exceptions.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,14 +20,14 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Controller
 @ResponseBody
 @Slf4j
-public class ExceptionHandlerGlobal {
+public class GlobalExceptionHandler {
 
-    // Rest Exceptions
+    // Business Exceptions
     @ExceptionHandler({
-            RestException.class,
+            BusinessException.class,
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public SimpleResponseDto badRequestExceptionHandler(RestException e) {
+    public SimpleResponseDto badRequestExceptionHandler(BusinessException e) {
         log.error(e.getMessage());
         return SimpleResponseDto.builder()
                 .message(e.getMessage())

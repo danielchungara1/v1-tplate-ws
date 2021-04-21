@@ -1,7 +1,5 @@
 package com.tplate.old.security.controllers;
 
-import com.tplate.old.security.dtos.ResetPasswordStep1Dto;
-import com.tplate.old.security.dtos.ResetPasswordStep2Dto;
 import com.tplate.old.security.services.SecurityService;
 import com.tplate.old.security.dtos.LoginDto;
 import io.swagger.v3.oas.annotations.tags.Tag;

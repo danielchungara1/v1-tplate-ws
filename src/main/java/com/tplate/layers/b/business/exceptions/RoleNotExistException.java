@@ -1,8 +1,8 @@
 package com.tplate.layers.b.business.exceptions;
 
-public class RoleNotFoundException extends RestException {
+public class RoleNotExistException extends BusinessException {
 
-    public RoleNotFoundException() {
+    public RoleNotExistException() {
         super("Rol not found.", "The rol sent is not recognized.");
     }
 }

@@ -1,6 +1,8 @@
 package com.tplate.layers.b.business.validators;
 
-import com.tplate.layers.b.business.exceptions.UserNotFoundException;
+import com.tplate.layers.b.business.exceptions.EmailExistException;
+import com.tplate.layers.b.business.exceptions.UserNotExistException;
+import com.tplate.layers.b.business.exceptions.UsernameExistException;
 import com.tplate.layers.c.persistence.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,28 @@ public class UserValidator {
     @Autowired
     UserRepository userRepository;
 
-    public void guaranteeExistById(Long id ) throws UserNotFoundException {
+    public void guaranteeExistById(Long id ) throws UserNotExistException {
         if (!this.userRepository.existsById(id)) {
             log.error("User not exist. {}", id);
-            throw new UserNotFoundException();
+            throw new UserNotExistException();
         }
     }
 
+    public void guaranteeNotExistEmail(String email) throws EmailExistException {
+        if (this.userRepository.existsByEmail(email)) {
+            log.error("Email exist. {}", email);
+            throw new EmailExistException();
+        }
+    }
+
+    public void guaranteeNotExistUsername(String username) {
+    }
+
+    public void throwsEmailExistException() throws EmailExistException {
+        throw new EmailExistException();
+    }
+
+    public void throwsUsernameExistException() throws UsernameExistException {
+        throw new UsernameExistException();
+    }
 }

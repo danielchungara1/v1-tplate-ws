@@ -1,7 +1,6 @@
 package com.tplate.old.handlers;
 
 import com.tplate.layers.a.rest.dtos.SimpleResponseDto;
-import com.tplate.layers.b.business.builders.ResponseBuilder;
 import com.tplate.old.util.JsonUtil;
 import com.tplate.old.util.StringUtil;
 import io.jsonwebtoken.ExpiredJwtException;

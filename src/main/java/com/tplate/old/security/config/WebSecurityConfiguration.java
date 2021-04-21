@@ -33,11 +33,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
         // user for matching credentials
         // Use BCryptPasswordEncoder
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -65,11 +68,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         //Apply JWT
 //        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 //        http.addFilterBefore(jwtExceptionHandlerFilter, JwtAuthorizationFilter.class);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
     }
 
     @Bean

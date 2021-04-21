@@ -1,5 +1,6 @@
 package com.tplate.layers.c.persistence.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,24 +22,34 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "email", unique = true)
+    private String email;
+
+    @Column(name = "username", unique = true)
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+    @JoinColumn(name = "password_recovery_id", unique = true)
+    private PasswordRecovery passwordRecovery;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "contact_id")
-    @Valid
-    private Contact contact;
-
-    @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "credentials_id")
-    private Credentials credentials;
-
-    @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "password_recovery_id")
-    private PasswordRecovery passwordRecovery;
-
     @Transient
     private String token;
+
 
 }

@@ -3,11 +3,11 @@ package com.tplate.layers.b.business.exceptions;
 import lombok.Data;
 
 @Data
-public  class RestException extends Exception{
+public  class BusinessException extends Exception{
 
     private String details;
 
-    public RestException(String message, String details) {
+    public BusinessException(String message, String details) {
         super(message);
         this.details  = details;
     }

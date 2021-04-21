@@ -1,6 +1,6 @@
 package com.tplate.layers.b.business.services;
 
-import com.tplate.layers.b.business.exceptions.RoleNotFoundException;
+import com.tplate.layers.b.business.exceptions.RoleNotExistException;
 import com.tplate.layers.b.business.validators.RoleValidator;
 import com.tplate.layers.c.persistence.models.Role;
 import com.tplate.layers.c.persistence.repositories.RoleRepository;
@@ -21,19 +21,11 @@ public class RoleService {
 
 
     @Transactional
-    public Role getModelById(Long id)  throws RoleNotFoundException{
+    public Role getModelById(Long id)  throws RoleNotExistException {
 
         this.roleValidator.guaranteeExistById(id);
 
         return this.roleRepository.getOne(id);
-    }
-
-    @Transactional
-    public void guaranteeExistById(Long id ) throws RoleNotFoundException {
-        if (!this.roleRepository.existsById(id)) {
-            log.error("Role not found. {}", id);
-            throw new RoleNotFoundException();
-        }
     }
 
 }

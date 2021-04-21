@@ -59,7 +59,7 @@ public class JwtTokenUtil {
                         .map(s -> new SimpleGrantedAuthority(s.getAuthority()))
                         .collect(Collectors.toList()));
         claims.put(SecurityConstants.JWT_USER_ID, user.getId());
-        return doGenerateToken(claims, user.getCredentials().getUsername());
+        return doGenerateToken(claims, user.getUsername());
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {

@@ -22,7 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByCredentials_Username(username).orElseThrow(
+        User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with username: " + username)
         );
 

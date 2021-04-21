@@ -3,7 +3,6 @@ package com.tplate.old.security.services;
 // External Dependencies
 import com.tplate.layers.a.rest.dtos.ResponseDto;
 import com.tplate.layers.b.business.builders.UserBuilder;
-import com.tplate.old.exceptions.FormValidatorException;
 import com.tplate.old.security.dtos.LoginDto;
 import com.tplate.old.security.dtos.TokenDto;
 import com.tplate.layers.c.persistence.repositories.PasswordRecoveryRepository;
@@ -12,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 // Internal Dependencies
-import com.tplate.layers.b.business.builders.ResponseBuilder;
 import com.tplate.layers.c.persistence.repositories.RoleRepository;
 import com.tplate.old.security.email.EmailService;
 import com.tplate.old.security.jwt.JwtTokenUtil;
@@ -56,11 +52,9 @@ public class SecurityService {
     @Autowired
     UserBuilder userBuilder;
 
-    public ResponseEntity loguear(LoginDto loginDto) {
+    public ResponseEntity loguear(LoginDto loginDto)  {
 
-        try {
-            // Validate Dto
-            loginDto.validate();
+//        try {
 
             // Credentials Validation
             this.authenticationManager.authenticate(
@@ -70,8 +64,8 @@ public class SecurityService {
             );
 
             // Generate token
-            String token = this.jwtTokenUtil.generateToken(this.userRepository.findByCredentials_Username(loginDto.getUsername()).get());
-            User user = this.userRepository.findByCredentials_Username(loginDto.getUsername()).get();
+            String token = this.jwtTokenUtil.generateToken(this.userRepository.findByUsername(loginDto.getUsername()).get());
+            User user = this.userRepository.findByUsername(loginDto.getUsername()).get();
             user.setToken(token);
             log.info("User logged OK. {}", loginDto.getUsername());
 
@@ -82,16 +76,16 @@ public class SecurityService {
                     .message("User logged.")
                     .data(user, TokenDto.class)
                     .build());
-        } catch (AuthenticationException e) {
-            return ResponseBuilder.buildConflict("Invalid Credentials.");
-
-        } catch (FormValidatorException e) {
-            return ResponseBuilder.buildConflict(e.getMessage());
-
-        } catch (Exception e) {
-            log.error("Unexpected Error. {}, {}", e.getMessage(), e.getClass().getCanonicalName());
-            return ResponseBuilder.buildSomethingWrong();
-        }
+//        } catch (AuthenticationException e) {
+//            return ResponseBuilder.buildConflict("Invalid Credentials.");
+//
+//        } catch (RestException e) {
+//            return ResponseBuilder.buildConflict(e.getMessage());
+//
+//        } catch (Exception e) {
+//            log.error("Unexpected Error. {}, {}", e.getMessage(), e.getClass().getCanonicalName());
+//            return ResponseBuilder.buildSomethingWrong();
+//        }
     }
 
 //    @Transactional

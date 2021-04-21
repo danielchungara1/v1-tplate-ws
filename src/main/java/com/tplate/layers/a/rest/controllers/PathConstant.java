@@ -1,4 +1,4 @@
-package com.tplate.layers.a.rest.controllers.shared;
+package com.tplate.layers.a.rest.controllers;
 
 public class PathConstant {
 
