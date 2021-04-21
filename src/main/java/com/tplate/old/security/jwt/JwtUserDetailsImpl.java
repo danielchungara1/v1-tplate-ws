@@ -1,8 +1,6 @@
 package com.tplate.old.security.jwt;
 
-import com.tplate.layers.c.persistence.models.Permission;
-import com.tplate.layers.c.persistence.models.User;
-import lombok.AllArgsConstructor;
+import com.tplate.layers.persistence.models.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Getter
 @Builder

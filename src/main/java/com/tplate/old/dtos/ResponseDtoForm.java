@@ -1,6 +1,6 @@
 package com.tplate.old.dtos;
 
-import com.tplate.layers.a.rest.dtos.ResponseDto;
+import com.tplate.layers.admission.dtos.ResponseDto;
 import lombok.Data;
 
 @Data

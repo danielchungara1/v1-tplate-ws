@@ -1,7 +1,7 @@
 package com.tplate.handlers;
 
-import com.tplate.layers.a.rest.dtos.SimpleResponseDto;
-import com.tplate.layers.b.business.exceptions.BusinessException;
+import com.tplate.layers.admission.dtos.SimpleResponseDto;
+import com.tplate.layers.business.exceptions.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
