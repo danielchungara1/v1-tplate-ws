@@ -3,7 +3,7 @@ package com.tplate.old.security.jwt;
 import com.tplate.old.models.Minutes;
 import com.tplate.old.security.constants.SecurityConstants;
 import com.tplate.old.util.TimeUtil;
-import com.tplate.layers.c.persistence.models.User;
+import com.tplate.layers.persistence.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

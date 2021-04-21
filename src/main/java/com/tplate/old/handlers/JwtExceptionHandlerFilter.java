@@ -1,12 +1,10 @@
 package com.tplate.old.handlers;
 
-import com.tplate.layers.a.rest.dtos.SimpleResponseDto;
+import com.tplate.layers.admission.dtos.ResponseSimpleDto;
 import com.tplate.old.util.JsonUtil;
-import com.tplate.old.util.StringUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,12 +29,12 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.BAD_REQUEST.value());
 
-            SimpleResponseDto simpleResponseDto = SimpleResponseDto.builder()
+            ResponseSimpleDto responseSimpleDto = ResponseSimpleDto.builder()
                     .message("Session finished.")
                     .details(e.getMessage())
                     .build();
 
-            response.getWriter().write(JsonUtil.convertObjectToJson(simpleResponseDto));
+            response.getWriter().write(JsonUtil.convertObjectToJson(responseSimpleDto));
 
         } catch (Exception e){
 
@@ -47,12 +45,12 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
-            SimpleResponseDto simpleResponseDto = SimpleResponseDto.builder()
+            ResponseSimpleDto responseSimpleDto = ResponseSimpleDto.builder()
                     .message(e.getMessage())
                     .details(e.getClass().getCanonicalName())
                     .build();
 
-            response.getWriter().write(JsonUtil.convertObjectToJson(simpleResponseDto));
+            response.getWriter().write(JsonUtil.convertObjectToJson(responseSimpleDto));
 
         }
     }

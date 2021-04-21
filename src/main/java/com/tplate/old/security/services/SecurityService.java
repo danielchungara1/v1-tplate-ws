@@ -1,11 +1,11 @@
 package com.tplate.old.security.services;
 
 // External Dependencies
-import com.tplate.layers.a.rest.dtos.ResponseDto;
-import com.tplate.layers.b.business.builders.UserBuilder;
+import com.tplate.layers.admission.dtos.ResponseDto;
+import com.tplate.layers.business.builders.UserBuilder;
 import com.tplate.old.security.dtos.LoginDto;
 import com.tplate.old.security.dtos.TokenDto;
-import com.tplate.layers.c.persistence.repositories.PasswordRecoveryRepository;
+import com.tplate.layers.persistence.repositories.PasswordRecoveryRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // Internal Dependencies
-import com.tplate.layers.c.persistence.repositories.RoleRepository;
+import com.tplate.layers.persistence.repositories.RoleRepository;
 import com.tplate.old.security.email.EmailService;
 import com.tplate.old.security.jwt.JwtTokenUtil;
-import com.tplate.layers.c.persistence.models.User;
-import com.tplate.layers.c.persistence.repositories.UserRepository;
+import com.tplate.layers.persistence.models.User;
+import com.tplate.layers.persistence.repositories.UserRepository;
 
 @Service
 @Log4j2
