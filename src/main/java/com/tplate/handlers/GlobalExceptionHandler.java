@@ -1,6 +1,6 @@
 package com.tplate.handlers;
 
-import com.tplate.layers.admission.dtos.ResponseSimpleDto;
+import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.exceptions.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

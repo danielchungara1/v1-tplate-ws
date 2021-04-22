@@ -1,4 +1,4 @@
-package com.tplate.layers.admission.dtos.role;
+package com.tplate.layers.access.dtos.role;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.tplate.old.handlers;
 
-import com.tplate.layers.admission.dtos.ResponseSimpleDto;
+import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.old.util.JsonUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.log4j.Log4j2;

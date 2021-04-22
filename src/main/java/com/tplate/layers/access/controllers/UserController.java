@@ -1,12 +1,12 @@
-package com.tplate.layers.admission.controllers;
+package com.tplate.layers.access.controllers;
 
-import com.tplate.layers.admission.dtos.user.*;
+import com.tplate.layers.access.dtos.user.*;
 import com.tplate.layers.business.exceptions.EmailExistException;
 import com.tplate.layers.business.exceptions.RoleNotExistException;
 import com.tplate.layers.business.exceptions.UserNotExistException;
 import com.tplate.layers.business.exceptions.UsernameExistException;
-import com.tplate.layers.admission.dtos.ResponseDto;
-import com.tplate.layers.admission.dtos.ResponseSimpleDto;
+import com.tplate.layers.access.dtos.ResponseDto;
+import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

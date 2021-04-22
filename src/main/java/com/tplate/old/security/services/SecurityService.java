@@ -2,7 +2,6 @@ package com.tplate.old.security.services;
 
 // External Dependencies
 import com.google.common.collect.ImmutableMap;
-import com.tplate.layers.admission.dtos.ResponseSimpleDto;
 import com.tplate.old.security.dtos.ResetPasswordStep2Dto;
 import com.tplate.old.security.exceptions.ResetCodeExpiredException;
 import com.tplate.old.security.exceptions.ResetCodeNotFoundException;
@@ -23,8 +22,7 @@ import com.tplate.old.security.jwt.JwtTokenUtil;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
-import com.tplate.layers.admission.dtos.ResponseDto;
-import com.tplate.layers.business.builders.UserBuilder;
+import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.persistence.models.PasswordRecovery;
 import com.tplate.old.security.dtos.LoginDto;
 import com.tplate.old.security.dtos.ResetPasswordStep1Dto;
@@ -62,9 +60,6 @@ public class SecurityService {
 
     @Autowired
     ResetPasswordService resetPasswordService;
-
-    @Autowired
-    UserBuilder userBuilder;
 
     @Transactional
     public ResponseEntity loguear(LoginDto loginDto) {

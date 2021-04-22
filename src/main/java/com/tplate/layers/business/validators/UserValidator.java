@@ -29,7 +29,11 @@ public class UserValidator {
         }
     }
 
-    public void guaranteeNotExistUsername(String username) {
+    public void guaranteeNotExistUsername(String username) throws UsernameExistException {
+        if (this.userRepository.existsByUsername(username)) {
+            log.error("Username exist. {}", username);
+            throw new UsernameExistException();
+        }
     }
 
     public void throwsEmailExistException() throws EmailExistException {

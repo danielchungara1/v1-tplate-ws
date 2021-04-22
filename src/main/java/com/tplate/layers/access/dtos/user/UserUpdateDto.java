@@ -1,4 +1,4 @@
-package com.tplate.layers.admission.dtos.user;
+package com.tplate.layers.access.dtos.user;
 
 import lombok.Data;
 import lombok.Getter;

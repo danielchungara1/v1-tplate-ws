@@ -1,6 +1,5 @@
-package com.tplate.layers.admission.dtos;
+package com.tplate.layers.access.dtos;
 
-import com.tplate.layers.admission.dtos.role.RoleResponseDto;
 import lombok.Data;
 
 import java.util.List;
