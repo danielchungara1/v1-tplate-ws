@@ -1,4 +1,4 @@
-package com.tplate.layers.admission.controllers;
+package com.tplate.layers.access.controllers;
 
 public class PathConstant {
 

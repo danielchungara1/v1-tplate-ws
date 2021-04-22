@@ -1,4 +1,4 @@
-package com.tplate.layers.admission.dtos;
+package com.tplate.layers.access.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
