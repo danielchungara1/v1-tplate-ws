@@ -1,13 +1,11 @@
 package com.tplate.old.security.exceptions;
 
-public class ResetCodeNotFoundException extends Exception {
+import com.tplate.layers.business.exceptions.BusinessException;
 
-    public ResetCodeNotFoundException(String s) {
-        super(s);
-    }
+public class ResetCodeNotFoundException extends BusinessException {
 
     public ResetCodeNotFoundException() {
-        super("Code not found.");
+        super("Code not found.", "The code provided not exist.");
     }
 
 

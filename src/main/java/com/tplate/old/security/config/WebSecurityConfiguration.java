@@ -60,8 +60,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         //Public and private Paths
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "*").permitAll()
-                .antMatchers("/api/v1/auth/token").permitAll()
-                .antMatchers("/api/security/reset-password/*").permitAll()
+                .antMatchers("/api/v1/auth/*").permitAll()
                 // Disallow everything else..
                 .antMatchers("/api/v1/users/*").authenticated();
         //Apply JWT

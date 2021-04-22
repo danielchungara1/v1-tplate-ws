@@ -1,13 +1,11 @@
 package com.tplate.old.security.exceptions;
 
-public class ResetCodeExpiredException extends Exception {
+import com.tplate.layers.business.exceptions.BusinessException;
 
-    public ResetCodeExpiredException(String s) {
-        super(s);
-    }
+public class ResetCodeExpiredException extends BusinessException {
 
     public ResetCodeExpiredException() {
-        super("Code has expired.");
+        super("Code has expired.", "The code provided has expired.");
     }
 
 

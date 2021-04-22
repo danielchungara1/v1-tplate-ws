@@ -1,13 +1,11 @@
 package com.tplate.old.security.exceptions;
 
-public class ResetCodeNotMatchingException extends Exception {
+import com.tplate.layers.business.exceptions.BusinessException;
 
-    public ResetCodeNotMatchingException(String s) {
-        super(s);
-    }
+public class ResetCodeNotMatchingException extends BusinessException {
 
     public ResetCodeNotMatchingException() {
-        super("Code is incorrect.");
+        super("Code is incorrect.", "The code provided not match.");
     }
 
 
