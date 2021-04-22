@@ -54,7 +54,7 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>();
 
         claims.put(SecurityConstants.JWT_AUTHORITIES_KEY,
-                getAuthorities(user)
+                user.getRole().getPermissions()
                         .stream()
                         .map(s -> new SimpleGrantedAuthority(s.getAuthority()))
                         .collect(Collectors.toList()));

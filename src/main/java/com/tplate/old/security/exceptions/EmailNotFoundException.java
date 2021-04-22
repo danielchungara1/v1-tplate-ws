@@ -1,13 +1,11 @@
 package com.tplate.old.security.exceptions;
 
-public class EmailNotFoundException extends Exception {
+import com.tplate.layers.business.exceptions.BusinessException;
 
-    public EmailNotFoundException(String s) {
-        super(s);
-    }
+public class EmailNotFoundException extends BusinessException {
 
     public EmailNotFoundException() {
-        super("Email not found.");
+        super("Email not found.", "The email provided is not recognized.");
     }
 
 

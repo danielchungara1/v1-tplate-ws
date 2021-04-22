@@ -10,6 +10,7 @@ import com.tplate.layers.admission.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "/new-user")
-//    @PreAuthorize("hasAuthority('CREATE_USERS')")
+    @PreAuthorize("hasAuthority('CREATE_USERS')")
     public ResponseDto createUser(@RequestBody(required = true) @Valid UserNewDto userDto) throws RoleNotExistException, UsernameExistException, EmailExistException {
 
         return ResponseDto.builder()
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-//    @PreAuthorize("hasAuthority('UPDATE_USERS')")
+    @PreAuthorize("hasAuthority('UPDATE_USERS')")
     public ResponseDto updateUser(@RequestBody(required = true) @Valid UserUpdateDto userDto, @PathVariable Long id) throws EmailExistException, UserNotExistException, RoleNotExistException, UsernameExistException {
         return ResponseDto.builder()
                 .message("User updated.")
@@ -46,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-//    @PreAuthorize("hasAuthority('READ_USERS')")
+    @PreAuthorize("hasAuthority('READ_USERS')")
     public ResponseDto getUserById(@PathVariable Long id) throws UserNotExistException {
         return ResponseDto.builder()
                 .message("User data.")
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-//    @PreAuthorize("hasAuthority('DELETE_USERS')")
+    @PreAuthorize("hasAuthority('DELETE_USERS')")
     public ResponseSimpleDto deleteUser(@PathVariable Long id) throws UserNotExistException {
         this.userService.deleteModelById(id);
         return ResponseSimpleDto.builder()
@@ -66,7 +67,7 @@ public class UserController {
     }
 
     @GetMapping(value = "")
-//    @PreAuthorize("hasAuthority('READ_USERS')")
+    @PreAuthorize("hasAuthority('READ_USERS')")
     @Transactional
     public ResponseDto findUsers(Pageable pageable) {
         return ResponseDto.builder()
