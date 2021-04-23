@@ -23,9 +23,10 @@
 - Maven 3
 - Postgres server
 - Database Client like DBeaver for local database creation.
+- Docker 20
 
 ## Installation
-
+- Install docker
 - create database 'tplate'
 - install dependencies
 - run spring-boot-app
