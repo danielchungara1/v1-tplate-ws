@@ -1,6 +1,7 @@
 package com.tplate.layers.persistence.models;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 @Data
+@ToString
 public class Role {
 
     @Id
