@@ -1,7 +1,9 @@
 package com.tplate.layers.business.validators;
 
 
+import com.tplate.layers.business.exceptions.EmailExistException;
 import com.tplate.layers.business.exceptions.UserNotExistException;
+import com.tplate.layers.business.exceptions.UsernameExistException;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,4 +42,25 @@ class UserValidatorTest {
                 .isInstanceOf(UserNotExistException.class);
     }
 
+    @Test
+    void guaranteeNotExistEmail_withExistingEmail() {
+        final String EXIST = "danielchungara1@gmail.com";
+
+        Mockito.when(userRepository.existsByEmail(EXIST))
+                .thenReturn(true);
+
+        assertThatThrownBy(() -> this.userValidator.guaranteeNotExistEmail(EXIST))
+                .isInstanceOf(EmailExistException.class);
+    }
+
+    @Test
+    void guaranteeNotExistUsername_withExistingUsername() {
+        final String EXIST = "danielchungara1";
+
+        Mockito.when(userRepository.existsByUsername(EXIST))
+                .thenReturn(true);
+
+        assertThatThrownBy(() -> this.userValidator.guaranteeNotExistUsername(EXIST))
+                .isInstanceOf(UsernameExistException.class);
+    }
 }
