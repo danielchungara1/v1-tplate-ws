@@ -1,7 +1,6 @@
 package com.tplate.layers.business.validators;
 
 import com.tplate.layers.business.exceptions.RoleNotExistException;
-import com.tplate.layers.business.exceptions.UserNotExistException;
 import com.tplate.layers.persistence.repositories.RoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
