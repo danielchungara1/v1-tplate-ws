@@ -1,9 +1,5 @@
 package com.tplate.layers.persistence.repositories;
 
-import com.tplate.layers.business.exceptions.EmailExistException;
-import com.tplate.layers.business.exceptions.UserNotExistException;
-import com.tplate.layers.business.exceptions.UsernameExistException;
-import com.tplate.layers.business.exceptions.UsernameNotExistException;
 import com.tplate.layers.persistence.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

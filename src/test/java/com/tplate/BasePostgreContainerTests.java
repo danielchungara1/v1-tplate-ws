@@ -27,4 +27,5 @@ public class BasePostgreContainerTests {
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
     }
+
 }
