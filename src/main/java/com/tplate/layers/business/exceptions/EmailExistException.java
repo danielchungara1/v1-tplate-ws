@@ -7,5 +7,8 @@ public class EmailExistException extends BusinessException {
     }
 
 
+    public static void throwsException() throws EmailExistException {
+        throw new EmailExistException();
+    }
 }
 

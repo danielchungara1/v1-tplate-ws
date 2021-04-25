@@ -1,7 +1,6 @@
 package com.tplate.layers.persistence.models;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +8,9 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 @Data
-@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
 
     @Id
@@ -17,7 +18,7 @@ public class Role {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "description")
@@ -31,5 +32,4 @@ public class Role {
             inverseJoinColumns = @JoinColumn(
                     name = "permission_id", referencedColumnName = "id"))
     private List<Permission> permissions;
-
 }
