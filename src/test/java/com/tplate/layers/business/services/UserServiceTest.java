@@ -40,6 +40,7 @@ class UserServiceTest extends BasePostgreContainerTests {
     Long NON_EXISTING_ID = -1L;
 
     @Test
+    @Transactional
     void saveModel_withNewUserValid() throws UsernameExistException, EmailExistException, RoleNotExistException {
 
         UserNewDto userNewDto = new UserNewDto();
@@ -121,46 +122,6 @@ class UserServiceTest extends BasePostgreContainerTests {
 
         assertThatThrownBy(() -> this.userService.saveModel(userNewDto))
                 .isInstanceOf(RoleNotExistException.class);
-
-    }
-
-    @Test
-    void updateModel_withExistingUserValid() throws EmailExistException, UsernameExistException, RoleNotExistException, UserNotExistException {
-
-        final String INITIAL_PASSWORD = UUID.randomUUID().toString();
-        User existingUser = this.userRepository.save(
-                User.builder()
-                .username(UUID.randomUUID().toString())
-                .password(this.passwordEncoder.encode(INITIAL_PASSWORD))
-                .name(UUID.randomUUID().toString())
-                .lastname(UUID.randomUUID().toString())
-                .email(UUID.randomUUID().toString())
-                .phone(UUID.randomUUID().toString())
-                .role(this.roleRepository.getOne(USER_ADMIN))
-                .build()
-        );
-
-        UserUpdateDto userDto = new UserUpdateDto();
-        userDto.setUsername(UUID.randomUUID().toString());
-        userDto.setPassword(UUID.randomUUID().toString());
-        userDto.setName(UUID.randomUUID().toString());
-        userDto.setLastname(UUID.randomUUID().toString());
-        userDto.setEmail(UUID.randomUUID().toString());
-        userDto.setPhone(UUID.randomUUID().toString());
-        userDto.setRoleId(ROL_ADMIN);
-
-        User userUpdated = this.userService.updateModel(userDto, existingUser.getId());
-
-        assertThat(userUpdated).isNotNull();
-        assertThat(userUpdated.getId()).isEqualTo(existingUser.getId());
-        assertThat(userUpdated.getUsername()).isEqualTo(userDto.getUsername());
-        assertThat(this.passwordEncoder.matches(INITIAL_PASSWORD, userUpdated.getPassword())).isFalse();
-        assertThat(userUpdated.getName()).isEqualTo(userDto.getName());
-        assertThat(userUpdated.getLastname()).isEqualTo(userDto.getLastname());
-        assertThat(userUpdated.getEmail()).isEqualTo(userDto.getEmail());
-        assertThat(userUpdated.getPhone()).isEqualTo(userDto.getPhone());
-        assertThat(userUpdated.getRole()).isNotNull();
-        assertThat(userUpdated.getRole().getId()).isEqualTo(userDto.getRoleId());
 
     }
 

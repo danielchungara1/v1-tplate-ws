@@ -57,7 +57,7 @@ public class UserService {
         User user = this.getModelById(id);
 
         // Password Optional
-        if (dto.getPassword() != null) {
+        if (dto.getPassword() != null && !dto.getPassword().equals("")) {
             user.setPassword(this.passwordEncoder.encode(dto.getPassword()));
         }
 
