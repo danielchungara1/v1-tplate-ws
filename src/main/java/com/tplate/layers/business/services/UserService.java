@@ -110,8 +110,11 @@ public class UserService {
     @Transactional
     public User getModelById(Long id) throws UserNotExistException {
 
-        return this.userRepository.findById(id)
-                .orElseThrow(UserNotExistException::new);
+        if (!this.userRepository.existsById(id)) {
+            UserNotExistException.throwsException();
+        }
+
+        return this.userRepository.getOne(id);
 
     }
 

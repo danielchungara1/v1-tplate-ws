@@ -2,7 +2,6 @@ package com.tplate.layers.business.services;
 
 import com.tplate.BasePostgreContainerTests;
 import com.tplate.layers.access.dtos.user.UserNewDto;
-import com.tplate.layers.access.dtos.user.UserUpdateDto;
 import com.tplate.layers.business.exceptions.EmailExistException;
 import com.tplate.layers.business.exceptions.RoleNotExistException;
 import com.tplate.layers.business.exceptions.UserNotExistException;
@@ -33,7 +32,7 @@ class UserServiceTest extends BasePostgreContainerTests {
     @Autowired
     RoleRepository roleRepository;
 
-    Long ROL_ADMIN = 1L;
+    Long ROLE_ADMIN = 1L;
 
     Long USER_ADMIN = 1L;
 
@@ -50,7 +49,7 @@ class UserServiceTest extends BasePostgreContainerTests {
         userNewDto.setLastname(UUID.randomUUID().toString());
         userNewDto.setEmail(UUID.randomUUID().toString());
         userNewDto.setPhone(UUID.randomUUID().toString());
-        userNewDto.setRoleId(ROL_ADMIN);
+        userNewDto.setRoleId(ROLE_ADMIN);
 
         User userSaved = userService.saveModel(userNewDto);
 
@@ -80,7 +79,7 @@ class UserServiceTest extends BasePostgreContainerTests {
         userNewDto.setLastname(UUID.randomUUID().toString());
         userNewDto.setEmail(UUID.randomUUID().toString());
         userNewDto.setPhone(UUID.randomUUID().toString());
-        userNewDto.setRoleId(ROL_ADMIN);
+        userNewDto.setRoleId(ROLE_ADMIN);
 
         assertThatThrownBy(() -> this.userService.saveModel(userNewDto))
                 .isInstanceOf(UsernameExistException.class);
@@ -100,7 +99,7 @@ class UserServiceTest extends BasePostgreContainerTests {
         userNewDto.setLastname(UUID.randomUUID().toString());
         userNewDto.setEmail(existingUser.getEmail());
         userNewDto.setPhone(UUID.randomUUID().toString());
-        userNewDto.setRoleId(ROL_ADMIN);
+        userNewDto.setRoleId(ROLE_ADMIN);
 
         assertThatThrownBy(() -> this.userService.saveModel(userNewDto))
                 .isInstanceOf(EmailExistException.class);
@@ -126,14 +125,57 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    void deleteModelById() {
+    @Transactional
+    void getModelById_withExistingId() throws UserNotExistException {
+
+        User existingUser = this.userRepository.getOne(USER_ADMIN);
+
+        User userUnderTest = this.userService.getModelById(USER_ADMIN);
+
+        assertThat(userUnderTest).isNotNull();
+        assertThat(userUnderTest.getId()).isEqualTo(existingUser.getId());
+        assertThat(userUnderTest.getUsername()).isEqualTo(existingUser.getUsername());
+        assertThat(userUnderTest.getEmail()).isEqualTo(existingUser.getEmail());
+
+        assertThat(userUnderTest.getRole()).isNotNull();
+        assertThat(userUnderTest.getRole().getId()).isEqualTo(existingUser.getRole().getId());
     }
 
     @Test
-    void getModelById() {
+    @Transactional
+    void getModelById_withNonExistingId() {
+
+        assertThatThrownBy(() -> this.userService.getModelById(NON_EXISTING_ID))
+                .isInstanceOf(UserNotExistException.class);
+
     }
 
     @Test
-    void findAll() {
+    @Transactional
+    void deleteModelById_withExistingId() throws UserNotExistException {
+
+        User userCreated = this.userRepository.save(
+                User.builder()
+                .username(UUID.randomUUID().toString())
+                .password(this.passwordEncoder.encode(UUID.randomUUID().toString()))
+                .name(UUID.randomUUID().toString())
+                .lastname(UUID.randomUUID().toString())
+                .email(UUID.randomUUID().toString())
+                .phone(UUID.randomUUID().toString())
+                .role(this.roleRepository.getOne(ROLE_ADMIN))
+                .build()
+        );
+        this.userService.deleteModelById(userCreated.getId());
+
+        assertThat(this.userRepository.findById(userCreated.getId()).isPresent()).isFalse();
     }
+
+    @Test
+    @Transactional
+    void deleteModelById_withNonExistingId() {
+        assertThatThrownBy(() -> this.userService.deleteModelById(NON_EXISTING_ID))
+                .isInstanceOf(UserNotExistException.class);
+    }
+
+
 }
