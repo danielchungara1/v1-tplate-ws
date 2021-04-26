@@ -1,12 +1,8 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.layers.business.exceptions.EmailExistException;
-import com.tplate.layers.business.exceptions.RoleNotExistException;
-import com.tplate.layers.business.exceptions.UserNotExistException;
-import com.tplate.layers.business.exceptions.UsernameExistException;
+import com.tplate.layers.business.exceptions.*;
 import com.tplate.layers.access.dtos.user.UserBaseDto;
 import com.tplate.layers.access.dtos.user.UserNewDto;
-import com.tplate.layers.business.validators.UserValidator;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.access.dtos.user.UserUpdateDto;
 import com.tplate.layers.persistence.repositories.UserRepository;
@@ -26,9 +22,6 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
-    UserValidator userValidator;
-
-    @Autowired
     RoleService roleService;
 
     @Autowired
@@ -44,23 +37,27 @@ public class UserService {
         user.setPassword(this.passwordEncoder.encode(dto.getPassword()));
 
         // Email
-        this.userValidator.guaranteeNotExistEmail(dto.getEmail());
+        if (this.userRepository.existsByEmail(dto.getEmail())) {
+            EmailExistException.throwsException();
+        }
         user.setEmail(dto.getEmail());
 
         // Username
-        this.userValidator.guaranteeNotExistUsername(dto.getUsername());
+        if (this.userRepository.existsByUsername(dto.getUsername())) {
+            UsernameExistException.throwsException();
+        }
         user.setUsername(dto.getUsername());
 
         return this.saveOrUpdateModel(user, dto);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public User updateModel(UserUpdateDto dto, Long id) throws RoleNotExistException, UsernameExistException, EmailExistException, UserNotExistException {
+    public User updateModel(UserUpdateDto dto, Long id) throws UserNotExistException, EmailExistException, UsernameExistException, RoleNotExistException {
 
         User user = this.getModelById(id);
 
         // Password Optional
-        if (dto.getPassword() != null) {
+        if (dto.getPassword() != null && !dto.getPassword().equals("")) {
             user.setPassword(this.passwordEncoder.encode(dto.getPassword()));
         }
 
@@ -71,7 +68,7 @@ public class UserService {
             if (user.getEmail().equals(dto.getEmail())) {
                 // False Positive
             } else {
-                this.userValidator.throwsEmailExistException();
+                EmailExistException.throwsException();
             }
         }
 
@@ -82,15 +79,14 @@ public class UserService {
             if (user.getUsername().equals(dto.getUsername())) {
                 // False Positive
             } else {
-                this.userValidator.throwsUsernameExistException();
+                UsernameExistException.throwsException();
             }
         }
 
         return this.saveOrUpdateModel( user, dto );
     }
 
-    @Transactional
-    public User saveOrUpdateModel(User user, UserBaseDto dto) throws RoleNotExistException {
+    private User saveOrUpdateModel(User user, UserBaseDto dto) throws RoleNotExistException {
 
         user.setRole(this.roleService.getModelById(dto.getRoleId()));
         user.setLastname(dto.getLastname());
@@ -103,16 +99,23 @@ public class UserService {
 
     @Transactional
     public void deleteModelById(Long id) throws UserNotExistException {
-        this.userValidator.guaranteeExistById(id);
+
+        if (!this.userRepository.existsById(id)) {
+            UserNotExistException.throwsException();
+        }
+
         this.userRepository.deleteById(id);
     }
 
     @Transactional
     public User getModelById(Long id) throws UserNotExistException {
 
-        this.userValidator.guaranteeExistById(id);
+        if (!this.userRepository.existsById(id)) {
+            UserNotExistException.throwsException();
+        }
 
         return this.userRepository.getOne(id);
+
     }
 
     @Transactional

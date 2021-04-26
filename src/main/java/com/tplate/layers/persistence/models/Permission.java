@@ -1,13 +1,16 @@
 package com.tplate.layers.persistence.models;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Table(name = "permission")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Permission implements GrantedAuthority {
 
     @Id
@@ -15,7 +18,7 @@ public class Permission implements GrantedAuthority {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "description")
@@ -25,4 +28,5 @@ public class Permission implements GrantedAuthority {
     public String getAuthority() {
         return this.getName();
     }
+
 }

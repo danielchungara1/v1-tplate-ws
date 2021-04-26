@@ -1,7 +1,6 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.business.exceptions.RoleNotExistException;
-import com.tplate.layers.business.validators.RoleValidator;
 import com.tplate.layers.persistence.models.Role;
 import com.tplate.layers.persistence.repositories.RoleRepository;
 import lombok.extern.log4j.Log4j2;
@@ -16,16 +15,14 @@ public class RoleService {
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    RoleValidator roleValidator;
-
-
     @Transactional
     public Role getModelById(Long id)  throws RoleNotExistException {
 
-        this.roleValidator.guaranteeExistById(id);
+        if (id == null) { RoleNotExistException.throwsException(); }
 
-        return this.roleRepository.getOne(id);
+        return this.roleRepository.findById(id)
+                .orElseThrow(RoleNotExistException::new);
+
     }
 
 }
