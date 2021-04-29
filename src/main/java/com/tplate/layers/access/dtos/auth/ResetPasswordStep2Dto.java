@@ -1,13 +1,10 @@
 package com.tplate.layers.access.dtos.auth;
 
 import lombok.Data;
-import lombok.ToString;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
-@ToString
 public class ResetPasswordStep2Dto {
 
     @NotBlank(message = "email is required")

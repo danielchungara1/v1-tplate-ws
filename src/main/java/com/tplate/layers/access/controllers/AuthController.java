@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     // Reset Password Step 1
-    @PostMapping("/password/reset_code")
+    @PostMapping("/password/reset-code")
     public ResponseEntity resetPassword(@RequestBody(required=true) @Valid ResetPasswordStep1Dto resetPasswordDto) throws EmailNotFoundException {
         return this.authService.resetPasswordStep1(resetPasswordDto);
     }

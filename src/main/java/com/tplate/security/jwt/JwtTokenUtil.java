@@ -5,8 +5,6 @@ import com.tplate.layers.persistence.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,15 +17,8 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenUtil {
 
-    @Value("${jwt2.expiration-minutes}")
-    private Integer EXPIRATION_MINUTES;
-
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
-    }
-
-    public Date getIssuedAtDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getIssuedAt);
     }
 
     public Date getExpirationDateFromToken(String token) {
@@ -48,11 +39,6 @@ public class JwtTokenUtil {
         return expiration.before(new Date());
     }
 
-    private Boolean ignoreTokenExpiration(String token) {
-        // here you specify tokens, for that the expiration is ignored
-        return false;
-    }
-
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
 
@@ -71,12 +57,8 @@ public class JwtTokenUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(EXPIRATION_MINUTES)))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET_KEY).compact();
-    }
-
-    public Boolean canTokenBeRefreshed(String token) {
-        return (!isTokenExpired(token) || ignoreTokenExpiration(token));
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(SecurityConstants.JWT_EXPIRATION_MINUTES)))
+                .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET_KEY).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
@@ -94,8 +76,4 @@ public class JwtTokenUtil {
         return null;
     }
 
-    private Collection<? extends GrantedAuthority>  getAuthorities(User user) {
-        return user.getRole().getPermissions();
-
-    }
 }

@@ -1,8 +1,7 @@
-package com.tplate.layers.persistence.models;
+package com.tplate.layers.business.shared;
 
 import lombok.Builder;
 import lombok.Data;
-
 import java.util.Map;
 
 @Builder

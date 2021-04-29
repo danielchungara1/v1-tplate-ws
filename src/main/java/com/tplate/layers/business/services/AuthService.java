@@ -2,13 +2,12 @@ package com.tplate.layers.business.services;
 
 // External Dependencies
 import com.google.common.collect.ImmutableMap;
-import com.tplate.layers.persistence.models.LoginModel;
+import com.tplate.layers.business.shared.LoginModel;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
 import com.tplate.layers.business.exceptions.ResetCodeExpiredException;
 import com.tplate.layers.business.exceptions.ResetCodeNotFoundException;
 import com.tplate.layers.business.exceptions.ResetCodeNotMatchingException;
 import com.tplate.security.jwt.JwtTokenUtil;
-import com.tplate.security.jwt.JwtService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ import com.tplate.layers.persistence.models.PasswordRecovery;
 import com.tplate.layers.access.dtos.auth.LoginDto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep1Dto;
 import com.tplate.layers.persistence.repositories.PasswordRecoveryRepository;
-import com.tplate.layers.persistence.models.Email;
+import com.tplate.layers.business.shared.Email;
 import com.tplate.layers.business.exceptions.EmailNotFoundException;
 
 import java.util.Date;
@@ -43,9 +42,6 @@ public class AuthService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtService jwtService;
 
     @Autowired
     EmailService emailService;

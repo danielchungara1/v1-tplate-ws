@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.layers.persistence.models.Email;
+import com.tplate.layers.business.shared.Email;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSendException;

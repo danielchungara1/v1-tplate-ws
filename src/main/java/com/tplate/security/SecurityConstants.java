@@ -17,8 +17,8 @@ public class SecurityConstants {
     public static String JWT_SECRET_KEY;
 
     @Value("${jwt2.expiration-minutes}")
-    private Long JWT_EXPIRATION_TIME_MINUTES_;
-    public static Long JWT_EXPIRATION_TIME_MINUTES;
+    private Long JWT_EXPIRATION_MINUTES_;
+    public static Long JWT_EXPIRATION_MINUTES;
 
 //  CONSTANTES INAMOVIBLES
     public static final String JWT_TOKEN_BEAR_PREFIX = "Bearer ";
@@ -32,8 +32,8 @@ public class SecurityConstants {
         JWT_SECRET_KEY = Base64.getEncoder().encodeToString(JWT_SECRET_KEY_.getBytes());
         log.info("JWT_SECRET_KEY: {}", "???");
 
-        JWT_EXPIRATION_TIME_MINUTES = JWT_EXPIRATION_TIME_MINUTES_;
-        log.info("JWT_EXPIRATION_TIME_HH: {}", JWT_EXPIRATION_TIME_MINUTES);
+        JWT_EXPIRATION_MINUTES = JWT_EXPIRATION_MINUTES_;
+        log.info("JWT_EXPIRATION_TIME_HH: {}", JWT_EXPIRATION_MINUTES);
 
     }
 }
