@@ -2,11 +2,11 @@ package com.tplate.layers.business.exceptions;
 
 public class RoleNotExistException extends BusinessException {
 
-    public RoleNotExistException() {
-        super("Rol not found.", "The rol sent is not recognized.");
+    public RoleNotExistException(Long id) {
+        super("Role not found. " + id, "The role sent is not recognized.");
     }
 
-    public static void throwsException() throws RoleNotExistException {
-        throw new RoleNotExistException();
+    public static void throwsException(Long id) throws RoleNotExistException {
+        throw new RoleNotExistException(id);
     }
 }

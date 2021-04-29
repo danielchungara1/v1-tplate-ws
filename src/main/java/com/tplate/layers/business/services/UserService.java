@@ -38,13 +38,13 @@ public class UserService {
 
         // Email
         if (this.userRepository.existsByEmail(dto.getEmail())) {
-            EmailExistException.throwsException();
+            EmailExistException.throwsException(dto.getEmail());
         }
         user.setEmail(dto.getEmail());
 
         // Username
         if (this.userRepository.existsByUsername(dto.getUsername())) {
-            UsernameExistException.throwsException();
+            UsernameExistException.throwsException(dto.getUsername());
         }
         user.setUsername(dto.getUsername());
 
@@ -68,7 +68,7 @@ public class UserService {
             if (user.getEmail().equals(dto.getEmail())) {
                 // False Positive
             } else {
-                EmailExistException.throwsException();
+                EmailExistException.throwsException(dto.getEmail());
             }
         }
 
@@ -79,7 +79,7 @@ public class UserService {
             if (user.getUsername().equals(dto.getUsername())) {
                 // False Positive
             } else {
-                UsernameExistException.throwsException();
+                UsernameExistException.throwsException(dto.getUsername());
             }
         }
 
@@ -101,7 +101,7 @@ public class UserService {
     public void deleteModelById(Long id) throws UserNotExistException {
 
         if (!this.userRepository.existsById(id)) {
-            UserNotExistException.throwsException();
+            UserNotExistException.throwsException(id);
         }
 
         this.userRepository.deleteById(id);
@@ -111,7 +111,7 @@ public class UserService {
     public User getModelById(Long id) throws UserNotExistException {
 
         if (!this.userRepository.existsById(id)) {
-            UserNotExistException.throwsException();
+            UserNotExistException.throwsException(id);
         }
 
         return this.userRepository.getOne(id);
@@ -121,5 +121,14 @@ public class UserService {
     @Transactional
     public Page findAll(Pageable pageable) {
         return this.userRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public User getModelByEmail(String email) throws EmailNotFoundException {
+        if (!this.userRepository.existsByEmail(email)) {
+            EmailNotFoundException.throwsException(email);
+        }
+
+        return this.userRepository.getByEmail(email);
     }
 }

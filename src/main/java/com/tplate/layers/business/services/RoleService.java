@@ -18,10 +18,10 @@ public class RoleService {
     @Transactional
     public Role getModelById(Long id)  throws RoleNotExistException {
 
-        if (id == null) { RoleNotExistException.throwsException(); }
+        if (id == null) { RoleNotExistException.throwsException(id); }
 
         return this.roleRepository.findById(id)
-                .orElseThrow(RoleNotExistException::new);
+                .orElseThrow(() -> new RoleNotExistException(id));
 
     }
 

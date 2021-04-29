@@ -2,7 +2,6 @@ package com.tplate.layers.persistence.models;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 
 @Entity
