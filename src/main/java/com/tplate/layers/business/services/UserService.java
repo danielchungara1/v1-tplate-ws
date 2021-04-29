@@ -122,4 +122,14 @@ public class UserService {
     public Page findAll(Pageable pageable) {
         return this.userRepository.findAll(pageable);
     }
+
+
+    @Transactional
+    public User getModelByUsername(String username) throws UsernameNotExistException {
+        if (!this.userRepository.existsByUsername(username)) {
+            UsernameNotExistException.throwsException();
+        }
+
+        return this.userRepository.getByUsername(username);
+    }
 }

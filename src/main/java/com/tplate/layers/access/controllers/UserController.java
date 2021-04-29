@@ -8,6 +8,7 @@ import com.tplate.layers.business.exceptions.UsernameExistException;
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.services.UserService;
+import com.tplate.layers.access.shared.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(PathConstant.BASE_PATH + "/users")
+@RequestMapping(Paths.USER)
 public class UserController {
 
     @Autowired
