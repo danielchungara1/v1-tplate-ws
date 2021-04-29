@@ -1,12 +1,13 @@
 package com.tplate.layers.business.exceptions;
 
-import com.tplate.layers.business.exceptions.BusinessException;
-
 public class ResetCodeNotFoundException extends BusinessException {
 
-    public ResetCodeNotFoundException() {
-        super("Code not found.", "The code provided not exist.");
+    public ResetCodeNotFoundException(String code) {
+        super("Code not found. " + code, "The code provided not exist.");
     }
 
+    public static void throwsException(String code) throws ResetCodeNotFoundException {
+        throw new ResetCodeNotFoundException(code);
+    }
 
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,11 +41,24 @@ public class ControllerExceptionHandler {
             MethodArgumentTypeMismatchException.class,
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseSimpleDto MethodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e) {
+    public ResponseSimpleDto methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e) {
         log.error(e.getMessage());
         return ResponseSimpleDto.builder()
                 .message("Invalid URL.")
                 .details("Check parameters sent in the URL." + e.getMessage())
+                .build();
+    }
+
+    // Invalid Path Variable URL
+    @ExceptionHandler({
+            BadCredentialsException.class,
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseSimpleDto badCredentialsExceptionExceptionHandler(BadCredentialsException e) {
+        log.error(e.getMessage());
+        return ResponseSimpleDto.builder()
+                .message("Invalid credentials.")
+                .details("Check credentials sent. " + e.getMessage())
                 .build();
     }
 
@@ -53,7 +67,7 @@ public class ControllerExceptionHandler {
             HttpMessageNotReadableException.class,
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseSimpleDto HttpMessageNotReadableExceptionHandler(HttpMessageNotReadableException e) {
+    public ResponseSimpleDto httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException e) {
         log.error(e.getMessage());
         return ResponseSimpleDto.builder()
                 .message("Invalid JSON body.")

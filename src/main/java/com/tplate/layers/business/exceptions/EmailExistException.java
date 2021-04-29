@@ -2,13 +2,13 @@ package com.tplate.layers.business.exceptions;
 
 public class EmailExistException extends BusinessException {
 
-    public EmailExistException() {
-        super("Email exists.", "The email was already taken.");
+    public EmailExistException(String email) {
+        super("Email exists. " + email, "The email was already taken.");
     }
 
-
-    public static void throwsException() throws EmailExistException {
-        throw new EmailExistException();
+    public static void throwsException(String email) throws EmailExistException {
+        throw new EmailExistException(email);
     }
+
 }
 

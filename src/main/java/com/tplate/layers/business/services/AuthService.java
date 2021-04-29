@@ -7,6 +7,7 @@ import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
 import com.tplate.layers.business.exceptions.ResetCodeExpiredException;
 import com.tplate.layers.business.exceptions.ResetCodeNotFoundException;
 import com.tplate.layers.business.exceptions.ResetCodeNotMatchingException;
+import com.tplate.layers.business.shared.PasswordRecoveryUtil;
 import com.tplate.security.jwt.JwtTokenUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // Internal Dependencies
-import com.tplate.layers.persistence.repositories.RoleRepository;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +47,6 @@ public class AuthService {
     EmailService emailService;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
     PasswordRecoveryRepository passwordRecoveryRepository;
 
     @Autowired
@@ -60,10 +57,6 @@ public class AuthService {
 
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-
-    private Random rand = new Random();
-
-    private final Integer EXPIRATION_MIN = 5;
 
     @Transactional
     public LoginModel login(LoginDto loginDto) throws AuthenticationException {
@@ -87,32 +80,21 @@ public class AuthService {
     }
 
     @Transactional
-    public ResponseEntity resetPasswordStep1(ResetPasswordStep1Dto resetPasswordDto) throws EmailNotFoundException {
-
-//        try {
-
-            // Dto Validation
-            String email = resetPasswordDto.getEmail();
-
-            // Existence Validation
-            if (!this.userRepository.existsByEmail(email)) {
-                log.error("Email not found. {}", email);
-                throw new EmailNotFoundException();
-            }
+    public void resetPasswordStep1(ResetPasswordStep1Dto dto) throws EmailNotFoundException {
 
             // Generate Reset Code
-            User user = this.userRepository.getByEmail(email);
+            User user = this.userService.getModelByEmail(dto.getEmail());
             PasswordRecovery resetPassword = user.getPasswordRecovery();
 
-            // If not exists reset code then I create it.
+            // If not exists reset code then create it.
             if (resetPassword == null) {
                 resetPassword = PasswordRecovery.builder()
-                        .code(this.code())
-                        .expirationDate(this.expiration())
+                        .code(PasswordRecoveryUtil.code())
+                        .expirationDate(PasswordRecoveryUtil.expiration())
                         .build();
-            } else { // If already exists then only I update it.
-                resetPassword.setCode(this.code());
-                resetPassword.setExpirationDate(this.expiration());
+            } else { // If already exists then update it.
+                resetPassword.setCode(PasswordRecoveryUtil.code());
+                resetPassword.setExpirationDate(PasswordRecoveryUtil.expiration());
             }
 
             user.setPasswordRecovery(resetPassword);
@@ -120,7 +102,7 @@ public class AuthService {
 
             // Send email
             this.emailService.send(Email.builder()
-                    .to(email)
+                    .to(dto.getEmail())
                     .subject("Reset Code for change password.")
                     .data(ImmutableMap.<String, Object>builder()
                             .put("resetCode", resetPassword.getCode())
@@ -128,63 +110,40 @@ public class AuthService {
                     )
                     .build());
 
-            log.info("Email with the reset code was sent successfully. {}", email);
-
-            return new ResponseEntity("Email was sent successfully.", HttpStatus.OK);
+            log.info("Email with the reset code was sent successfully. {}", dto.getEmail());
 
     }
 
     @Transactional
-    public ResponseEntity resetPasswordStep2(ResetPasswordStep2Dto resetPasswordDto) throws EmailNotFoundException, ResetCodeNotFoundException, ResetCodeNotMatchingException, ResetCodeExpiredException {
-
-            // Dto Validation
-            String email = resetPasswordDto.getEmail();
-
-            // Validate existence
-            if (!this.userRepository.existsByEmail(email)) {
-                log.error("Email not exist. {}", email);
-                throw new EmailNotFoundException();
-            }
+    public void resetPasswordStep2(ResetPasswordStep2Dto dto) throws EmailNotFoundException, ResetCodeNotFoundException, ResetCodeNotMatchingException, ResetCodeExpiredException {
 
             // Validate reset code
-            User user = this.userRepository.getByEmail(email);
-            PasswordRecovery resetPassword = user.getPasswordRecovery();
+            User user = this.userService.getModelByEmail(dto.getEmail());
+            PasswordRecovery passwordRecovery = user.getPasswordRecovery();
 
-            if (resetPassword == null) {
-                log.error("Reset code not found for email {}", email);
-                throw new ResetCodeNotFoundException();
+            if (passwordRecovery == null) {
+                log.error("Reset code not found. {}", dto.getCode());
+                ResetCodeNotFoundException.throwsException(dto.getCode());
             }
 
             // Validate matching
-            if (!resetPassword.getCode().equals(resetPasswordDto.getCode())) {
+            if (!passwordRecovery.getCode().equals(dto.getCode())) {
                 log.error("Codes not matching {} {}."
-                        , resetPassword.getCode(), resetPasswordDto.getCode());
-                throw new ResetCodeNotMatchingException();
+                        , passwordRecovery.getCode(), dto.getCode());
+                ResetCodeNotMatchingException.throwsException(dto.getCode());
             }
 
             // Validate expiration
-            if (!(new Date(System.currentTimeMillis()).before(resetPassword.getExpirationDate()))) {
-                log.error("Code has expired {}.", resetPassword.getCode());
-                throw new ResetCodeExpiredException();
+            if (!(new Date(System.currentTimeMillis()).before(passwordRecovery.getExpirationDate()))) {
+                log.error("Code has expired {}.", passwordRecovery.getCode());
+                ResetCodeExpiredException.throwsException(passwordRecovery.getCode());
             }
 
             // Save new password
-            user.setPassword(passwordEncoder.encode(resetPasswordDto.getPassword()));
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
             userRepository.save(user);
-            log.info("The new password has been saved. User {}", user.getUsername());
-
-            return new ResponseEntity("The password has been changed.", HttpStatus.OK);
+            log.info("The new password has been updated. User {}", user.getUsername());
 
     }
-
-    public String code (){
-        return String.format("%04d", this.rand.nextInt(10000));
-    }
-
-    public Date expiration(){
-        return  new Date(System.currentTimeMillis() + (this.EXPIRATION_MIN * 60 * 1000));
-    }
-
-
 
 }

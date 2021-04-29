@@ -1,12 +1,13 @@
 package com.tplate.layers.business.exceptions;
 
-import com.tplate.layers.business.exceptions.BusinessException;
-
 public class ResetCodeExpiredException extends BusinessException {
 
-    public ResetCodeExpiredException() {
-        super("Code has expired.", "The code provided has expired.");
+    public ResetCodeExpiredException(String code) {
+        super("Code has expired. " + code, "The code provided has expired.");
     }
 
+    public static void throwsException(String code) throws ResetCodeExpiredException {
+        throw new ResetCodeExpiredException(code);
+    }
 
 }
