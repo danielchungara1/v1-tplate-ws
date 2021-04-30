@@ -51,7 +51,7 @@ class JwtExceptionHandlerFilterTest extends BasePostgreContainerTests {
 
         jwtExceptionHandlerFilter.doFilterInternal(req, res, filterChain);
 
-        assertThat(res.getContentAsString()).isNotNull();
+            assertThat(res.getContentAsString()).isNotNull();
         assertThat(res.getContentType()).isEqualTo(HttpConstants.CONTENT_TYPE_JSON);
         assertThat(res.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 
