@@ -33,7 +33,12 @@ public class JwtTokenUtil {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
+    public String generateToken(User user) throws JwtCustomException {
+
+        if (user == null) {
+            JwtCustomException.throwsException("User cannot be null.", "For token generation is mandatory the user.");
+        }
+
         Map<String, Object> claims = new HashMap<>();
 
         claims.put(SecurityConstants.JWT_AUTHORITIES_KEY,

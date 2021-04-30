@@ -8,6 +8,7 @@ import com.tplate.layers.business.exceptions.ResetCodeExpiredException;
 import com.tplate.layers.business.exceptions.ResetCodeNotFoundException;
 import com.tplate.layers.business.exceptions.ResetCodeNotMatchingException;
 import com.tplate.layers.business.shared.PasswordRecoveryUtil;
+import com.tplate.security.jwt.JwtCustomException;
 import com.tplate.security.jwt.JwtTokenUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class AuthService {
     JwtTokenUtil jwtTokenUtil;
 
     @Transactional
-    public LoginModel login(LoginDto loginDto) throws AuthenticationException {
+    public LoginModel login(LoginDto loginDto) throws AuthenticationException, JwtCustomException {
 
         // Credentials Validation
         this.authenticationManager.authenticate(
