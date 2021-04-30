@@ -12,9 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.UUID;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -57,7 +55,7 @@ class UserServiceUpdateTest extends BasePostgreContainerTests {
                         .lastname(UUID.randomUUID().toString())
                         .email(UUID.randomUUID().toString())
                         .phone(UUID.randomUUID().toString())
-                        .role(this.roleRepository.getOne(USER_ADMIN))
+                        .role(this.roleRepository.getOneById(USER_ADMIN))
                         .build()
         );
         if (this.existingUser1.getId() == null) {
@@ -73,7 +71,7 @@ class UserServiceUpdateTest extends BasePostgreContainerTests {
                         .lastname(UUID.randomUUID().toString())
                         .email(UUID.randomUUID().toString())
                         .phone(UUID.randomUUID().toString())
-                        .role(this.roleRepository.getOne(USER_ADMIN))
+                        .role(this.roleRepository.getOneById(USER_ADMIN))
                         .build()
         );
         if (this.existingUser2.getId() == null) {
@@ -88,7 +86,6 @@ class UserServiceUpdateTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void updateModel_withExistingUserValid() throws EmailExistException, UsernameExistException, RoleNotExistException, UserNotExistException {
 
         UserUpdateDto userDto = new UserUpdateDto();
@@ -116,7 +113,6 @@ class UserServiceUpdateTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void updateModel_withExistingEmail() {
         // Email(User 1) update to Email(User 2)
         UserUpdateDto dtoUser1 = new UserUpdateDto();
@@ -136,7 +132,6 @@ class UserServiceUpdateTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void updateModel_withExistingUsername() {
         // Username(User 1) update to Username(User 2)
         UserUpdateDto dtoUser1 = new UserUpdateDto();
@@ -156,7 +151,6 @@ class UserServiceUpdateTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void updateModel_withNonExistingRole() {
 
         UserUpdateDto dtoUser1 = new UserUpdateDto();
@@ -175,7 +169,6 @@ class UserServiceUpdateTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void updateModel_withNonExistingUserId() {
 
         UserUpdateDto dtoUser1 = new UserUpdateDto();

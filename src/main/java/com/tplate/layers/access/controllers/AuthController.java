@@ -12,6 +12,7 @@ import com.tplate.layers.business.exceptions.ResetCodeNotFoundException;
 import com.tplate.layers.business.exceptions.ResetCodeNotMatchingException;
 import com.tplate.layers.business.services.AuthService;
 import com.tplate.layers.access.shared.Paths;
+import com.tplate.security.jwt.JwtCustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class AuthController {
 
     // Login
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException {
+    public ResponseDto login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException, JwtCustomException {
         return ResponseDto.builder()
                 .message("User logged.")
                 .details("User logged successfully.")
