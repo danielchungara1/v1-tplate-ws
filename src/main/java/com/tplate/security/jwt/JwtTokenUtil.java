@@ -11,23 +11,17 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil {
 
     public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
+        return getAllClaimsFromToken(token).getSubject();
     }
 
     public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
-
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
+        return getAllClaimsFromToken(token).getExpiration();
     }
 
     private Claims getAllClaimsFromToken(String token) {
@@ -48,17 +42,14 @@ public class JwtTokenUtil {
                         .map(s -> new SimpleGrantedAuthority(s.getAuthority()))
                         .collect(Collectors.toList()));
         claims.put(SecurityConstants.JWT_USER_ID, user.getId());
-        return doGenerateToken(claims, user.getUsername());
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(SecurityConstants.JWT_EXPIRATION_MINUTES)))
-                .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET_KEY)
+                .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
@@ -22,8 +24,9 @@ class UserDetailsServiceImplTest extends BasePostgreContainerTests {
     static final Long USER_EXISTING = 1L;
 
     @Test
+    @Transactional
     void loadUserByUsername_withExistingUsername() {
-        User userExisting = userRepository.getOne(USER_EXISTING);
+        User userExisting = userRepository.getOneById(USER_EXISTING);
 
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(userExisting.getUsername());
 

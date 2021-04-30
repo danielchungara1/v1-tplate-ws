@@ -34,7 +34,6 @@ class RoleServiceTest extends BasePostgreContainerTests {
     final Long NOT_EXIST_ID = -1L;
 
     @BeforeEach
-    @Transactional
     public void beforeEach() throws Exception {
 
         this.permissionsExpected = this.permissionRepository.saveAll(

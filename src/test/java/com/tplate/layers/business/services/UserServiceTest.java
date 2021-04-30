@@ -12,7 +12,6 @@ import com.tplate.layers.persistence.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import java.util.UUID;
 
@@ -37,7 +36,6 @@ class UserServiceTest extends BasePostgreContainerTests {
     Long NON_EXISTING_ID = -1L;
 
     @Test
-    @Transactional
     void saveModel_withNewUserValid() throws UsernameExistException, EmailExistException, RoleNotExistException {
 
         UserNewDto userNewDto = new UserNewDto();
@@ -65,10 +63,9 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
-    void saveModel_withExistingUsername() {
+    void saveModel_withExistingUsername() throws UserNotExistException {
 
-        User existingUser = this.userRepository.getOne(USER_ADMIN);
+        User existingUser = this.userRepository.getOneById(USER_ADMIN);
 
         UserNewDto userNewDto = new UserNewDto();
         userNewDto.setUsername(existingUser.getUsername());
@@ -85,10 +82,9 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
-    void saveModel_withExistingEmail() {
+    void saveModel_withExistingEmail() throws UserNotExistException {
 
-        User existingUser = this.userRepository.getOne(USER_ADMIN);
+        User existingUser = this.userRepository.getOneById(USER_ADMIN);
 
         UserNewDto userNewDto = new UserNewDto();
         userNewDto.setUsername(UUID.randomUUID().toString());
@@ -105,7 +101,6 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void saveModel_withNonExistingRol() {
 
         UserNewDto userNewDto = new UserNewDto();
@@ -123,10 +118,9 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void getModelById_withExistingId() throws UserNotExistException {
 
-        User existingUser = this.userRepository.getOne(USER_ADMIN);
+        User existingUser = this.userRepository.getOneById(USER_ADMIN);
 
         User userUnderTest = this.userService.getModelById(USER_ADMIN);
 
@@ -140,7 +134,6 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void getModelById_withNonExistingId() {
 
         assertThatThrownBy(() -> this.userService.getModelById(NON_EXISTING_ID))
@@ -149,7 +142,6 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void deleteModelById_withExistingId() throws UserNotExistException {
 
         User userCreated = this.userRepository.save(
@@ -160,7 +152,7 @@ class UserServiceTest extends BasePostgreContainerTests {
                 .lastname(UUID.randomUUID().toString())
                 .email(UUID.randomUUID().toString())
                 .phone(UUID.randomUUID().toString())
-                .role(this.roleRepository.getOne(ROLE_ADMIN))
+                .role(this.roleRepository.getOneById(ROLE_ADMIN))
                 .build()
         );
         this.userService.deleteModelById(userCreated.getId());
@@ -169,7 +161,6 @@ class UserServiceTest extends BasePostgreContainerTests {
     }
 
     @Test
-    @Transactional
     void deleteModelById_withNonExistingId() {
         assertThatThrownBy(() -> this.userService.deleteModelById(NON_EXISTING_ID))
                 .isInstanceOf(UserNotExistException.class);

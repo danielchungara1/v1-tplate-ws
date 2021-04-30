@@ -114,7 +114,7 @@ public class UserService {
             UserNotExistException.throwsException(id);
         }
 
-        return this.userRepository.getOne(id);
+        return this.userRepository.getOneById(id);
 
     }
 
