@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.PostgreBaseContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.access.dtos.user.UserUpdateDto;
 import com.tplate.layers.business.exceptions.*;
 import com.tplate.layers.persistence.models.User;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-class UserServiceUpdateTest extends PostgreBaseContainerTests {
+class UserServiceUpdateTest extends ContainersTests {
 
     @Autowired
     UserService userService;

@@ -2,26 +2,27 @@ package com.tplate.layers.business.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.tplate.PostgreBaseContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.access.dtos.auth.LoginDto;
+import com.tplate.layers.access.dtos.auth.ResetPasswordStep1Dto;
+import com.tplate.layers.business.exceptions.EmailNotFoundException;
 import com.tplate.layers.business.shared.LoginModel;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.RoleRepository;
 import com.tplate.layers.persistence.repositories.UserRepository;
-import com.tplate.security.SecurityConstants;
 import com.tplate.security.jwt.JwtCustomException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
-class AuthServiceTest extends PostgreBaseContainerTests {
+class AuthServiceTest extends ContainersTests {
 
     @Autowired
     UserRepository userRepository;
@@ -77,4 +78,17 @@ class AuthServiceTest extends PostgreBaseContainerTests {
         assertThat(decodedToken.getSubject()).isEqualTo(this.newUser.getUsername());
 
     }
+
+
+    @Test
+    void resetPasswordStep1_withNonExistingEmail(){
+        assertThatThrownBy(() ->
+                this.authService.resetPasswordStep1(
+                        ResetPasswordStep1Dto.builder()
+                                .email(UUID.randomUUID().toString())
+                                .build()
+                )
+        ).isInstanceOf(EmailNotFoundException.class);
+    }
+
 }

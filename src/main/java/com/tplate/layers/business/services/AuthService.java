@@ -1,7 +1,7 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.business.exceptions.*;
-import com.tplate.layers.business.shared.EmailImpl;
+import com.tplate.layers.business.shared.EmailResetCode;
 import com.tplate.layers.business.shared.LoginModel;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
 import com.tplate.layers.business.shared.PasswordRecoveryUtil;
@@ -92,7 +92,7 @@ public class AuthService {
             this.userRepository.save(user);
 
             // Send email
-            this.emailService.send(EmailImpl.builder()
+            this.emailService.send(EmailResetCode.builder()
                     .to(dto.getEmail())
                     .data(resetPassword.getCode())
                     .build());

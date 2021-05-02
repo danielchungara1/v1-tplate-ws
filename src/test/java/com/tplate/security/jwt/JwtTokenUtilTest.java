@@ -2,7 +2,7 @@ package com.tplate.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.tplate.PostgreBaseContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import com.tplate.security.SecurityConstants;
@@ -19,7 +19,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 @Slf4j
-class JwtTokenUtilTest extends PostgreBaseContainerTests {
+class JwtTokenUtilTest extends ContainersTests {
 
     @Autowired
     JwtTokenUtil jwtTokenUtil;

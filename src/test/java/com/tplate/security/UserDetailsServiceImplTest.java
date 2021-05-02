@@ -1,6 +1,6 @@
 package com.tplate.security;
 
-import com.tplate.PostgreBaseContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
-class UserDetailsServiceImplTest extends PostgreBaseContainerTests {
+class UserDetailsServiceImplTest extends ContainersTests {
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;

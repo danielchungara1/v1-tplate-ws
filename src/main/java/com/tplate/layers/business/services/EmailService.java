@@ -23,7 +23,6 @@ public class EmailService {
 
     private final FreeMarkerConfigurer freemarkerConfig;
 
-    @Autowired
     public EmailService(JavaMailSender javaMailSender, FreeMarkerConfigurer freemarkerConfig) {
         this.javaMailSender = javaMailSender;
         this.freemarkerConfig = freemarkerConfig;

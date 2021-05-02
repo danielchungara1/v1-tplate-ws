@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.PostgreBaseContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.business.exceptions.RoleNotExistException;
 import com.tplate.layers.persistence.models.Permission;
 import com.tplate.layers.persistence.models.Role;
@@ -17,7 +17,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 @Slf4j
-class RoleServiceTest extends PostgreBaseContainerTests {
+class RoleServiceTest extends ContainersTests {
 
     @Autowired
     RoleService roleService;

@@ -8,18 +8,22 @@ import java.util.Map;
 
 @Builder
 @Data
-public class EmailImpl implements IEmail {
+public class EmailResetCode implements IEmail {
 
     private String to;
 
     private Map<String, Object> data;
 
-    // Custom Setter for Builder
-    public static class EmailImplBuilder {
+    private static String RESET_CODE = "resetCode";
 
-        public EmailImpl.EmailImplBuilder data(String resetCode){
+    public static String SUBJECT = "Reset Code for change password.";
+
+    // Custom Setter for Builder
+    public static class EmailResetCodeBuilder {
+
+        public EmailResetCode.EmailResetCodeBuilder data(String resetCode){
             this.data = ImmutableMap.<String, Object>builder()
-                    .put("resetCode", resetCode)
+                    .put(RESET_CODE, resetCode)
                     .build();
             return this;
         }
@@ -28,7 +32,7 @@ public class EmailImpl implements IEmail {
 
     @Override
     public String getSubject() {
-        return "Reset Code for change password.";
+        return SUBJECT;
     }
 
 }

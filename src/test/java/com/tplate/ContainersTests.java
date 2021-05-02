@@ -1,5 +1,9 @@
 package com.tplate;
 
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.ServerSetupTest;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -7,11 +11,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class PostgreBaseContainerTests {
+public class ContainersTests {
 
     static final PostgreSQLContainer postgreSQLContainer;
-
-    protected final Long EXISTING_USER = 1L;
 
     static {
         postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer()
@@ -28,5 +30,10 @@ public class PostgreBaseContainerTests {
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
     }
+
+    @RegisterExtension
+    protected static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration.aConfig().withUser("duke", "springboot"))
+            .withPerMethodLifecycle(false);
 
 }
