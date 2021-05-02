@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.BasePostgreContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.access.dtos.user.UserUpdateDto;
 import com.tplate.layers.business.exceptions.*;
 import com.tplate.layers.persistence.models.User;
@@ -11,12 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
+
 import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-class UserServiceUpdateTest extends BasePostgreContainerTests {
+class UserServiceUpdateTest extends ContainersTests {
 
     @Autowired
     UserService userService;

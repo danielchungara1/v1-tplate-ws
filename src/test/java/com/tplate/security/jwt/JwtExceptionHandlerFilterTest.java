@@ -1,6 +1,6 @@
 package com.tplate.security.jwt;
 
-import com.tplate.BasePostgreContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.access.shared.HttpConstants;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 import java.io.IOException;
 
 @Slf4j
-class JwtExceptionHandlerFilterTest extends BasePostgreContainerTests {
+class JwtExceptionHandlerFilterTest extends ContainersTests {
 
     @Autowired
     JwtExceptionHandlerFilter jwtExceptionHandlerFilter;

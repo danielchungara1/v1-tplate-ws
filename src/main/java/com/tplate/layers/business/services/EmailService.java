@@ -1,29 +1,34 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.layers.business.shared.Email;
+import com.tplate.layers.business.exceptions.EmailSenderException;
+import com.tplate.layers.business.shared.IEmail;
+import freemarker.template.TemplateException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Log4j2
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
-    @Autowired
-    private FreeMarkerConfigurer freemarkerConfig;
+    private final FreeMarkerConfigurer freemarkerConfig;
 
-    public void send(Email email) {
+    public EmailService(JavaMailSender javaMailSender, FreeMarkerConfigurer freemarkerConfig) {
+        this.javaMailSender = javaMailSender;
+        this.freemarkerConfig = freemarkerConfig;
+    }
+
+    public void send(IEmail emailDto) throws EmailSenderException {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
@@ -36,19 +41,23 @@ public class EmailService {
             String templateContent = FreeMarkerTemplateUtils
                     .processTemplateIntoString(freemarkerConfig.getConfiguration()
                                     .getTemplate("/email/reset-password.ftl"),
-                            email.getData());
+                            emailDto.getData());
 
-            helper.setTo(email.getTo());
-            helper.setSubject(email.getSubject());
+            helper.setTo(emailDto.getTo());
+            helper.setSubject(emailDto.getSubject());
             helper.setText(templateContent, true);
+
+
             javaMailSender.send(mimeMessage);
+
             log.info("Email was sent successfully");
 
-        } catch (Exception e) {
-            log.error("Email wasn't sent. {}", e.getClass().getCanonicalName());
-            throw new MailSendException("Email wasn't sent.");
 
+        } catch (MessagingException | TemplateException | IOException | RuntimeException e) {
+            log.error("Email not sent. {} {}", e.getMessage(), e.getClass().getCanonicalName());
+            EmailSenderException.throwsException(e.getMessage());
         }
+
 
     }
 }

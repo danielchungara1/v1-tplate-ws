@@ -1,6 +1,6 @@
 package com.tplate.security.jwt;
 
-import com.tplate.BasePostgreContainerTests;
+import com.tplate.ContainersTests;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import com.tplate.security.SecurityConstants;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 
 @Slf4j
-class JwtAuthorizationFilterTest extends BasePostgreContainerTests {
+class JwtAuthorizationFilterTest extends ContainersTests {
 
     @Autowired
     JwtAuthorizationFilter jwtAuthorizationFilter;
