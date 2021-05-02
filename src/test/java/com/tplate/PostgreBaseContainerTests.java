@@ -7,9 +7,11 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class BasePostgreContainerTests {
+public class PostgreBaseContainerTests {
 
     static final PostgreSQLContainer postgreSQLContainer;
+
+    protected final Long EXISTING_USER = 1L;
 
     static {
         postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer()

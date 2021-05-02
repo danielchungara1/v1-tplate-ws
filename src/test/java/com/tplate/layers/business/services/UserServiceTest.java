@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.BasePostgreContainerTests;
+import com.tplate.PostgreBaseContainerTests;
 import com.tplate.layers.access.dtos.user.UserNewDto;
 import com.tplate.layers.business.exceptions.EmailExistException;
 import com.tplate.layers.business.exceptions.RoleNotExistException;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import java.util.UUID;
 
-class UserServiceTest extends BasePostgreContainerTests {
+class UserServiceTest extends PostgreBaseContainerTests {
 
     @Autowired
     UserService userService;

@@ -6,10 +6,7 @@ import com.tplate.layers.access.dtos.auth.LoginDto;
 import com.tplate.layers.access.dtos.auth.LoginResponseDto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep1Dto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
-import com.tplate.layers.business.exceptions.EmailNotFoundException;
-import com.tplate.layers.business.exceptions.ResetCodeExpiredException;
-import com.tplate.layers.business.exceptions.ResetCodeNotFoundException;
-import com.tplate.layers.business.exceptions.ResetCodeNotMatchingException;
+import com.tplate.layers.business.exceptions.*;
 import com.tplate.layers.business.services.AuthService;
 import com.tplate.layers.access.shared.Paths;
 import com.tplate.security.jwt.JwtCustomException;
@@ -40,7 +37,7 @@ public class AuthController {
     // Reset Password Step 1
     @PostMapping("/password/reset-code")
     public ResponseSimpleDto resetPassword(@RequestBody @Valid ResetPasswordStep1Dto resetPasswordDto)
-            throws EmailNotFoundException {
+            throws EmailNotFoundException, EmailSenderException {
 
         this.authService.resetPasswordStep1(resetPasswordDto);
 

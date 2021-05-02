@@ -1,26 +1,19 @@
 package com.tplate.layers.business.services;
 
-// External Dependencies
-import com.google.common.collect.ImmutableMap;
+import com.tplate.layers.business.exceptions.*;
+import com.tplate.layers.business.shared.EmailImpl;
 import com.tplate.layers.business.shared.LoginModel;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
-import com.tplate.layers.business.exceptions.ResetCodeExpiredException;
-import com.tplate.layers.business.exceptions.ResetCodeNotFoundException;
-import com.tplate.layers.business.exceptions.ResetCodeNotMatchingException;
 import com.tplate.layers.business.shared.PasswordRecoveryUtil;
 import com.tplate.security.jwt.JwtCustomException;
 import com.tplate.security.jwt.JwtTokenUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-// Internal Dependencies
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +21,8 @@ import com.tplate.layers.persistence.models.PasswordRecovery;
 import com.tplate.layers.access.dtos.auth.LoginDto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep1Dto;
 import com.tplate.layers.persistence.repositories.PasswordRecoveryRepository;
-import com.tplate.layers.business.shared.Email;
-import com.tplate.layers.business.exceptions.EmailNotFoundException;
 
 import java.util.Date;
-import java.util.Random;
 
 @Service
 @Log4j2
@@ -81,7 +71,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void resetPasswordStep1(ResetPasswordStep1Dto dto) throws EmailNotFoundException {
+    public void resetPasswordStep1(ResetPasswordStep1Dto dto) throws EmailNotFoundException, EmailSenderException {
 
             // Generate Reset Code
             User user = this.userService.getModelByEmail(dto.getEmail());
@@ -102,13 +92,9 @@ public class AuthService {
             this.userRepository.save(user);
 
             // Send email
-            this.emailService.send(Email.builder()
+            this.emailService.send(EmailImpl.builder()
                     .to(dto.getEmail())
-                    .subject("Reset Code for change password.")
-                    .data(ImmutableMap.<String, Object>builder()
-                            .put("resetCode", resetPassword.getCode())
-                            .build()
-                    )
+                    .data(resetPassword.getCode())
                     .build());
 
             log.info("Email with the reset code was sent successfully. {}", dto.getEmail());
