@@ -1,7 +1,7 @@
 # _Web API Service_
 ![](https://github.com/danielchungara1/v1-tplate-ws/workflows/tests/badge.svg)
 
-## Screenshots
+## Demo
 - https://v1-tplate-ws.herokuapp.com
 - Use role id = 1 for create new users with highest privileges.
 
