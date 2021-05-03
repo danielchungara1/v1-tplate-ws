@@ -1,7 +1,13 @@
 # _Web API Service_
 ![](https://github.com/danielchungara1/v1-tplate-ws/workflows/tests/badge.svg)
 
+## Screenshots
+- Swagger
+
 ![alt text](https://raw.githubusercontent.com/danielchungara1/v1-tplate-ws/develop/src/main/resources/imgs/readme/swagger.JPG?raw=true)
+
+- Postman
+
 ![alt text](https://raw.githubusercontent.com/danielchungara1/v1-tplate-ws/develop/src/main/resources/imgs/readme/postman.JPG?raw=true)
 
 ## Core technologies 
