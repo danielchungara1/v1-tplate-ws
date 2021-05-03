@@ -169,18 +169,18 @@
             <artifactId>java-uuid-generator</artifactId>
             <version>4.0.1</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.icegreen</groupId>-->
-<!--            <artifactId>greenmail-junit5</artifactId>-->
-<!--            <version>1.6.1</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.awaitility</groupId>-->
-<!--            <artifactId>awaitility</artifactId>-->
-<!--            <version>4.0.3</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail-junit5</artifactId>
+            <version>1.6.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>4.0.3</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
