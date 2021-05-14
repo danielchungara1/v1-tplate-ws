@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.danisoft.tplate</groupId>
     <artifactId>api</artifactId>
-    <version>V.1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>api</name>
     <description>tplate api</description>
 

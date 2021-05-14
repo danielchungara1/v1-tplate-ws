@@ -8,7 +8,7 @@ import com.tplate.layers.business.exceptions.UsernameExistException;
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.services.UserService;
-import com.tplate.layers.access.shared.Paths;
+import com.tplate.layers.access.shared.Endpoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(Paths.USER)
+@RequestMapping
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/new-user")
+    @PostMapping(value = Endpoints.USER_NEW)
     @PreAuthorize("hasAuthority('CREATE_USERS')")
     public ResponseDto createUser(@RequestBody(required = true) @Valid UserNewDto userDto) throws RoleNotExistException, UsernameExistException, EmailExistException {
 
@@ -35,7 +35,7 @@ public class UserController {
 
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = Endpoints.USER_UPDATE)
     @PreAuthorize("hasAuthority('UPDATE_USERS')")
     public ResponseDto updateUser(@RequestBody(required = true) @Valid UserUpdateDto userDto, @PathVariable Long id) throws EmailExistException, UserNotExistException, RoleNotExistException, UsernameExistException {
         return ResponseDto.builder()
@@ -46,7 +46,7 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = Endpoints.USER_READ_ONE)
     @PreAuthorize("hasAuthority('READ_USERS')")
     public ResponseDto getUserById(@PathVariable Long id) throws UserNotExistException {
         return ResponseDto.builder()
@@ -56,7 +56,7 @@ public class UserController {
                 .build();
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = Endpoints.USER_DELETE)
     @PreAuthorize("hasAuthority('DELETE_USERS')")
     public ResponseSimpleDto deleteUser(@PathVariable Long id) throws UserNotExistException {
         this.userService.deleteModelById(id);
@@ -66,7 +66,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping(value = "")
+    @GetMapping(value = Endpoints.USER_READ_MANY)
     @PreAuthorize("hasAuthority('READ_USERS')")
     @Transactional
     public ResponseDto findUsers(Pageable pageable) {

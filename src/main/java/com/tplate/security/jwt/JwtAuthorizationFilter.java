@@ -1,5 +1,6 @@
 package com.tplate.security.jwt;
 
+import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +30,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+
+        if (request.getRequestURI().contains(Endpoints.AUTH)) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         final String jwtToken = jwtTokenUtil.resolveToken(request);
 

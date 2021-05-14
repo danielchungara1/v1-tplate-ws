@@ -1,6 +1,7 @@
 package com.tplate.security.jwt;
 
 import com.tplate.ContainersTests;
+import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import com.tplate.security.SecurityConstants;
@@ -64,6 +65,9 @@ class JwtAuthorizationFilterTest extends ContainersTests {
         Mockito
                 .when(req.getHeader(SecurityConstants.JWT_HEADER_AUTHORIZATION_KEY))
                 .thenReturn(SecurityConstants.JWT_TOKEN_BEAR_PREFIX + this.jwtTokenUtil.generateToken(userExisting));
+        Mockito
+                .when(req.getRequestURI())
+                .thenReturn(Endpoints.USER_READ_ONE);
 
         this.jwtAuthorizationFilter.doFilterInternal(req, res, filterChain);
 

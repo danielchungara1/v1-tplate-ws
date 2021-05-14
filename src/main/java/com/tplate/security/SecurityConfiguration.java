@@ -2,7 +2,7 @@ package com.tplate.security;
 
 import com.tplate.security.jwt.JwtExceptionHandlerFilter;
 import com.tplate.security.jwt.JwtAuthorizationFilter;
-import com.tplate.layers.access.shared.Paths;
+import com.tplate.layers.access.shared.Endpoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,9 +59,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //Public and private Paths
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "*").permitAll()
-                .antMatchers(Paths.AUTH + "/*").permitAll()
+                .antMatchers(Endpoints.AUTH + "/*").permitAll()
                 // Disallow everything else..
-                .antMatchers(Paths.USER + "*").authenticated();
+                .antMatchers(Endpoints.USER + "*").authenticated();
         //Apply JWT
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtExceptionHandlerFilter, JwtAuthorizationFilter.class);
