@@ -1,5 +1,6 @@
 package com.tplate.security;
 
+import com.google.common.collect.ImmutableList;
 import com.tplate.security.jwt.JwtExceptionHandlerFilter;
 import com.tplate.security.jwt.JwtAuthorizationFilter;
 import com.tplate.layers.access.shared.Endpoints;
@@ -51,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin();
 
         //Permit request from diferent origins, equivalent to: @CrossOrigin
-        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        http.cors().configurationSource(request -> this.getCorsConfiguration());
 
         //Sessions are management by token
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -61,10 +62,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "*").permitAll()
                 .antMatchers(Endpoints.AUTH + "/*").permitAll()
                 // Disallow everything else..
-                .antMatchers(Endpoints.USER + "*").authenticated();
+                .antMatchers(Endpoints.USER + "/*").authenticated();
         //Apply JWT
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtExceptionHandlerFilter, JwtAuthorizationFilter.class);
+    }
+
+    private CorsConfiguration getCorsConfiguration() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(ImmutableList.of("*"));
+        configuration.setAllowedMethods(ImmutableList.of("HEAD",
+                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowCredentials(false);
+        configuration.setAllowedHeaders(ImmutableList.of("*"));
+        configuration.setExposedHeaders(ImmutableList.of("X-Auth-Token","Authorization","Access-Control-Allow-Origin","Access-Control-Allow-Credentials"));
+        return configuration;
     }
 
     @Bean
