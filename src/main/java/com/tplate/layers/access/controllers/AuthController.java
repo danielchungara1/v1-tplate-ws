@@ -42,7 +42,7 @@ public class AuthController {
         this.authService.resetPasswordStep1(resetPasswordDto);
 
         return ResponseSimpleDto.builder()
-                .message("Email was sent successfully.")
+                .message("Email sent.")
                 .details("Check the in mail box.")
                 .build();
 
@@ -55,7 +55,7 @@ public class AuthController {
         this.authService.resetPasswordStep2(resetPasswordDto);
 
         return ResponseSimpleDto.builder()
-                .message("The password has been changed.")
+                .message("Password changed.")
                 .details("Try logging with the new credentials.")
                 .build();
     }

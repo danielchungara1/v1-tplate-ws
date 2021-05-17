@@ -81,7 +81,7 @@ public class ControllerExceptionHandler {
     public ResponseSimpleDto methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         log.error(e.getMessage());
         return ResponseSimpleDto.builder()
-                .message(e.hasErrors() ? e.getAllErrors().get(0).getDefaultMessage() :"Method Argument not valid.")
+                .message(e.hasErrors() ? e.getAllErrors().get(0).getDefaultMessage() :"Method Argument invalid.")
                 .details(e.getMessage())
                 .build();
     }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 public class ResetPasswordStep2Dto {
 
     @NotBlank(message = "email is required")
-    @Email(message = "email not valid")
+    @Email(message = "email invalid")
     private String email;
 
     @NotBlank(message = "code is required")
