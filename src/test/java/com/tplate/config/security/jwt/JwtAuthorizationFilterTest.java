@@ -1,11 +1,11 @@
-package com.tplate.security.jwt;
+package com.tplate.config.security.jwt;
 
 import com.tplate.ContainersTests;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
-import com.tplate.security.SecurityConstants;
-import com.tplate.security.UserDetailsImpl;
+import com.tplate.config.security.SecurityConstants;
+import com.tplate.config.security.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

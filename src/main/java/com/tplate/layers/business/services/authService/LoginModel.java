@@ -1,4 +1,4 @@
-package com.tplate.layers.business.shared;
+package com.tplate.layers.business.services.authService;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
-package com.tplate.security.jwt;
+package com.tplate.config.security.jwt;
 
 import com.tplate.layers.access.shared.Endpoints;
-import com.tplate.security.UserDetailsServiceImpl;
+import com.tplate.config.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,12 @@
-package com.tplate.security.jwt;
+package com.tplate.config.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tplate.ContainersTests;
+import com.tplate.config.security.SecurityConstants;
+import com.tplate.config.security.UserDetailsImpl;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
-import com.tplate.security.SecurityConstants;
-import com.tplate.security.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

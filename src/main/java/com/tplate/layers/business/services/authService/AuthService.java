@@ -1,12 +1,10 @@
-package com.tplate.layers.business.services;
+package com.tplate.layers.business.services.authService;
 
 import com.tplate.layers.business.exceptions.*;
-import com.tplate.layers.business.shared.EmailResetCode;
-import com.tplate.layers.business.shared.LoginModel;
+import com.tplate.layers.business.services.UserService;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
-import com.tplate.layers.business.shared.PasswordRecoveryUtil;
-import com.tplate.security.jwt.JwtCustomException;
-import com.tplate.security.jwt.JwtTokenUtil;
+import com.tplate.config.security.jwt.JwtCustomException;
+import com.tplate.config.security.jwt.JwtTokenUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

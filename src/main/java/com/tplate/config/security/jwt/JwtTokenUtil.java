@@ -1,6 +1,6 @@
-package com.tplate.security.jwt;
+package com.tplate.config.security.jwt;
 
-import com.tplate.security.SecurityConstants;
+import com.tplate.config.security.SecurityConstants;
 import com.tplate.layers.persistence.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

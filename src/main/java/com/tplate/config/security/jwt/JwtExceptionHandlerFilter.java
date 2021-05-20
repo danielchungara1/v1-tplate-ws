@@ -1,4 +1,4 @@
-package com.tplate.security.jwt;
+package com.tplate.config.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;

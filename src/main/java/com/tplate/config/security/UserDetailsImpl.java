@@ -1,4 +1,4 @@
-package com.tplate.security;
+package com.tplate.config.security;
 
 import com.tplate.layers.persistence.models.Permission;
 import com.tplate.layers.persistence.models.User;

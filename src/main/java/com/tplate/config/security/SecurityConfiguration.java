@@ -1,8 +1,8 @@
-package com.tplate.security;
+package com.tplate.config.security;
 
 import com.google.common.collect.ImmutableList;
-import com.tplate.security.jwt.JwtExceptionHandlerFilter;
-import com.tplate.security.jwt.JwtAuthorizationFilter;
+import com.tplate.config.security.jwt.JwtExceptionHandlerFilter;
+import com.tplate.config.security.jwt.JwtAuthorizationFilter;
 import com.tplate.layers.access.shared.Endpoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

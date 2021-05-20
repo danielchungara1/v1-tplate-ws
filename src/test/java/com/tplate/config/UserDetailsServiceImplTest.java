@@ -1,6 +1,7 @@
-package com.tplate.security;
+package com.tplate.config;
 
 import com.tplate.ContainersTests;
+import com.tplate.config.security.UserDetailsServiceImpl;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
 import org.junit.jupiter.api.Test;

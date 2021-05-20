@@ -1,10 +1,8 @@
-package com.tplate.layers.business.services;
+package com.tplate.layers.business.services.authService;
 
 import com.tplate.layers.business.exceptions.EmailSenderException;
-import com.tplate.layers.business.shared.IEmail;
 import freemarker.template.TemplateException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
