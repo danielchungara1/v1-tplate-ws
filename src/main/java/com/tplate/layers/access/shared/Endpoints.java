@@ -14,6 +14,7 @@ public class Endpoints {
     public static final String USER_UPDATE = USER + "/{id}";
     public static final String USER_READ_ONE = USER + "/{id}";
     public static final String USER_READ_MANY = USER;
+    public static final String USER_READ_ALL = USER + "/all";
     public static final String USER_DELETE = USER + "/{id}";
 
 }

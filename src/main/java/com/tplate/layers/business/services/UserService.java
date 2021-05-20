@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Log4j2
 public class UserService {
@@ -121,6 +123,11 @@ public class UserService {
     @Transactional
     public Page findAll(Pageable pageable) {
         return this.userRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public List<User> findAll() {
+        return this.userRepository.findAll();
     }
 
     @Transactional

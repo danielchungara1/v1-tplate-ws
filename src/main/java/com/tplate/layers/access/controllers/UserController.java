@@ -77,4 +77,17 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping(value = Endpoints.USER_READ_ALL)
+    @PreAuthorize("hasAuthority('READ_USERS')")
+    @Transactional
+    public ResponseDto findUsersAll() {
+
+        return ResponseDto.builder()
+                .message("All users fetched.")
+                .details("All users fetched successfully.")
+                .data(this.userService.findAll(), UserResponseDto[].class)
+                .build();
+    }
+
+
 }
