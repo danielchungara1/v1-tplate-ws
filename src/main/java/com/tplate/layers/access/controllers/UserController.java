@@ -61,8 +61,8 @@ public class UserController {
     public ResponseSimpleDto deleteUser(@PathVariable Long id) throws UserNotExistException {
         this.userService.deleteModelById(id);
         return ResponseSimpleDto.builder()
-                .message("User removed.")
-                .details("The user was removed successfully.")
+                .message("User deleted.")
+                .details("The user was deleted successfully.")
                 .build();
     }
 

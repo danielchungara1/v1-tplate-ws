@@ -17,4 +17,7 @@ public class Endpoints {
     public static final String USER_READ_ALL = USER + "/all";
     public static final String USER_DELETE = USER + "/{id}";
 
+    public static final String ROLES = BASE_PATH + "/roles";
+    public static final String ROLE_READ_ALL =  ROLES + "/all";
+
 }

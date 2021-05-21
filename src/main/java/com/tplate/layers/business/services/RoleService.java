@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Log4j2
 public class RoleService {
@@ -23,6 +25,11 @@ public class RoleService {
         return this.roleRepository.findById(id)
                 .orElseThrow(() -> new RoleNotExistException(id));
 
+    }
+
+    @Transactional
+    public List<Role> findAll() {
+        return this.roleRepository.findAll();
     }
 
 }
