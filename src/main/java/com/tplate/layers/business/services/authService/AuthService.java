@@ -58,8 +58,10 @@ public class AuthService {
         );
 
         // Generate token
+        User user = this.userRepository.getByUsername(loginDto.getUsername());
         LoginModel loginModel = LoginModel.builder()
-                .token(this.jwtTokenUtil.generateToken(this.userRepository.getByUsername(loginDto.getUsername())))
+                .token(this.jwtTokenUtil.generateToken(user))
+                .user(user)
                 .build();
         log.info("User logged OK. {}", loginDto.getUsername());
 

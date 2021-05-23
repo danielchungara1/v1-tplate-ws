@@ -28,7 +28,7 @@ public class AuthController {
     @PostMapping(Endpoints.AUTH_LOGIN)
     public ResponseDto login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException, JwtCustomException {
         return ResponseDto.builder()
-                .message("User logged.")
+                .message("User logged in.")
                 .details("User logged successfully.")
                 .data(this.authService.login(loginDto), LoginResponseDto.class)
                 .build();
