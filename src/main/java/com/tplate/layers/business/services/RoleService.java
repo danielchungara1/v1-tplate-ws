@@ -1,5 +1,7 @@
 package com.tplate.layers.business.services;
 
+import com.tplate.layers.access.dtos.role.RoleDto;
+import com.tplate.layers.business.exceptions.RoleNameExistException;
 import com.tplate.layers.business.exceptions.RoleNotExistException;
 import com.tplate.layers.persistence.models.Role;
 import com.tplate.layers.persistence.repositories.RoleRepository;
@@ -30,6 +32,29 @@ public class RoleService {
     @Transactional
     public List<Role> findAll() {
         return this.roleRepository.findAll();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Role saveModel(RoleDto dto) throws RoleNameExistException {
+
+        Role role = Role.builder().build();
+
+        return this.saveOrUpdateModel(role, dto);
+    }
+
+    private Role saveOrUpdateModel(Role role, RoleDto dto) throws RoleNameExistException {
+
+        // Role Name
+        if (this.roleRepository.existsByName(dto.getName())) {
+            RoleNameExistException.throwsException(dto.getName());
+        }
+        role.setName(dto.getName());
+
+        // Role Description
+        role.setDescription(dto.getDescription());
+
+        return this.roleRepository.save(role);
+
     }
 
 }

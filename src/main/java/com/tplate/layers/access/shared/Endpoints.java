@@ -19,6 +19,7 @@ public class Endpoints {
 
     public static final String ROLES = BASE_PATH + "/roles";
     public static final String ROLE_READ_ALL =  ROLES + "/all";
+    public static final String ROLE_NEW = ROLES + "/new-role";
 
     public static final String PERMISSIONS = BASE_PATH + "/permissions";
     public static final String PERMISSIONS_READ_ALL =  PERMISSIONS + "/all";
