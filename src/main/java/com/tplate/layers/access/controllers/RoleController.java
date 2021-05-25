@@ -5,7 +5,9 @@ import com.tplate.layers.access.dtos.role.RoleDto;
 import com.tplate.layers.access.dtos.role.RoleResponseDto;
 import com.tplate.layers.access.dtos.user.UserResponseDto;
 import com.tplate.layers.access.shared.Endpoints;
+import com.tplate.layers.business.exceptions.PermissionNotExistException;
 import com.tplate.layers.business.exceptions.RoleNameExistException;
+import com.tplate.layers.business.exceptions.RoleWithoutPermissionsException;
 import com.tplate.layers.business.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +37,7 @@ public class RoleController {
 
     @PostMapping(value = Endpoints.ROLE_NEW)
     @PreAuthorize("hasAuthority('CREATE_ROLES')")
-    public ResponseDto createRole(@RequestBody(required = true) @Valid RoleDto roleDto) throws RoleNameExistException {
+    public ResponseDto createRole(@RequestBody(required = true) @Valid RoleDto roleDto) throws RoleNameExistException, RoleWithoutPermissionsException, PermissionNotExistException {
 
         return ResponseDto.builder()
                 .message("Role created.")
