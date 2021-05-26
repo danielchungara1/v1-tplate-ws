@@ -1,6 +1,7 @@
 package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.ResponseDto;
+import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.access.dtos.role.RoleDto;
 import com.tplate.layers.access.dtos.role.RoleResponseDto;
 import com.tplate.layers.access.dtos.user.UserResponseDto;
@@ -48,7 +49,7 @@ public class RoleController {
 
     @GetMapping(value = Endpoints.ROLE_READ_ONE)
     @PreAuthorize("hasAuthority('READ_USERS')")
-    public ResponseDto getUserById(@PathVariable Long id) throws RoleNotExistException {
+    public ResponseDto getRoleById(@PathVariable Long id) throws RoleNotExistException {
         return ResponseDto.builder()
                 .message("Role data.")
                 .details("Role data found successfully.")
@@ -58,7 +59,7 @@ public class RoleController {
 
     @PutMapping(value = Endpoints.ROLE_UPDATE)
     @PreAuthorize("hasAuthority('UPDATE_ROLES')")
-    public ResponseDto updateUser(@RequestBody(required = true) @Valid RoleDto roleDto, @PathVariable Long id) throws RoleWithoutPermissionsException, RoleNotExistException, RoleNameExistException, PermissionNotExistException {
+    public ResponseDto updateRole(@RequestBody(required = true) @Valid RoleDto roleDto, @PathVariable Long id) throws RoleWithoutPermissionsException, RoleNotExistException, RoleNameExistException, PermissionNotExistException {
         return ResponseDto.builder()
                 .message("Role updated.")
                 .details("Role was updated successfully.")
@@ -67,4 +68,16 @@ public class RoleController {
 
     }
 
+    @DeleteMapping(value = Endpoints.ROLE_DELETE)
+    @PreAuthorize("hasAuthority('DELETE_ROLES')")
+    public ResponseSimpleDto deleteRole(@PathVariable Long id) throws RoleNotExistException, RoleMustNotBeDeletedException {
+        this.roleService.deleteModelById(id);
+        return ResponseSimpleDto.builder()
+                .message("Role deleted.")
+                .details("The role was deleted successfully.")
+                .build();
+    }
+
 }
+
+
