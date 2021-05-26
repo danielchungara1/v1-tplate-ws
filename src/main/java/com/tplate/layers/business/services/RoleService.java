@@ -2,9 +2,9 @@ package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.role.RoleDto;
 import com.tplate.layers.business.exceptions.PermissionNotExistException;
-import com.tplate.layers.business.exceptions.RoleWithoutPermissionsException;
 import com.tplate.layers.business.exceptions.RoleNameExistException;
 import com.tplate.layers.business.exceptions.RoleNotExistException;
+import com.tplate.layers.business.exceptions.RoleWithoutPermissionsException;
 import com.tplate.layers.persistence.models.Permission;
 import com.tplate.layers.persistence.models.Role;
 import com.tplate.layers.persistence.repositories.RoleRepository;
@@ -44,18 +44,38 @@ public class RoleService {
     @Transactional(rollbackFor = Exception.class)
     public Role saveModel(RoleDto dto) throws RoleNameExistException, RoleWithoutPermissionsException, PermissionNotExistException {
 
-        Role role = Role.builder().build();
-
-        return this.saveOrUpdateModel(role, dto);
-    }
-
-    private Role saveOrUpdateModel(Role role, RoleDto dto) throws RoleNameExistException, RoleWithoutPermissionsException, PermissionNotExistException {
-
         // Role Name
         if (this.roleRepository.existsByName(dto.getName())) {
             RoleNameExistException.throwsException(dto.getName());
         }
+
+        Role role = Role.builder().build();
         role.setName(dto.getName());
+
+        return this.saveOrUpdateModel(role, dto);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Role updateModel(RoleDto dto, Long roleId) throws RoleNameExistException, RoleWithoutPermissionsException, PermissionNotExistException, RoleNotExistException {
+
+        Role role = this.getModelById(roleId);
+
+        // Name False Positive.
+        if ( !this.roleRepository.existsByName(dto.getName()) ) {
+            role.setName(dto.getName());
+        } else {
+            if (role.getName().equals(dto.getName())) {
+                // False Positive
+            } else {
+                RoleNameExistException.throwsException(dto.getName());
+            }
+        }
+
+        return this.saveOrUpdateModel(role, dto);
+    }
+
+
+    private Role saveOrUpdateModel(Role role, RoleDto dto) throws RoleNameExistException, RoleWithoutPermissionsException, PermissionNotExistException {
 
         // Role Description
         role.setDescription(dto.getDescription());
