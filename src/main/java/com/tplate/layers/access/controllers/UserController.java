@@ -66,7 +66,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping(value = Endpoints.USER_READ_MANY)
+    @GetMapping(value = Endpoints.USER)
     @PreAuthorize("hasAuthority('READ_USERS')")
     @Transactional
     public ResponseDto findUsers(Pageable pageable) {
