@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
+
 //    Role getOneById(Long id);
 //
-//    Boolean existsByName(String name);
+    Boolean existsByName(String name);
 //
 //    @Query(
 //            value = "SELECT CASE WHEN EXISTS ( SELECT * FROM {h-schema}user WHERE role_id = :roleId) " +

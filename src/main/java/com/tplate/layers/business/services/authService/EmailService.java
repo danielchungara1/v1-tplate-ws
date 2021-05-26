@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services.authService;
 
-import com.tplate.layers.business.exceptions.EmailSenderException;
+import com.tplate.layers.business.exceptions.auth.EmailSenderException;
 import freemarker.template.TemplateException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.javamail.JavaMailSender;

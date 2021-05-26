@@ -1,4 +1,6 @@
-package com.tplate.layers.business.exceptions;
+package com.tplate.layers.business.exceptions.role;
+
+import com.tplate.layers.business.exceptions.BusinessException;
 
 public class RoleMustNotBeDeletedException extends BusinessException {
 

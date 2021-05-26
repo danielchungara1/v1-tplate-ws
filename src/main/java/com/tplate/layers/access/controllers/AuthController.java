@@ -6,7 +6,7 @@ import com.tplate.layers.access.dtos.auth.LoginDto;
 import com.tplate.layers.access.dtos.auth.LoginResponseDto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep1Dto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
-import com.tplate.layers.business.exceptions.*;
+import com.tplate.layers.business.exceptions.auth.*;
 import com.tplate.layers.business.services.authService.AuthService;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.config.security.jwt.JwtCustomException;

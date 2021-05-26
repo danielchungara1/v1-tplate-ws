@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services.authService;
 
-import com.tplate.layers.business.exceptions.*;
+import com.tplate.layers.business.exceptions.auth.*;
 import com.tplate.layers.business.services.UserService;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
 import com.tplate.config.security.jwt.JwtCustomException;

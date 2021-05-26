@@ -2,11 +2,14 @@ package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
+import com.tplate.layers.access.dtos.brand.BrandDto;
 import com.tplate.layers.access.dtos.brand.BrandResponseDto;
 import com.tplate.layers.access.dtos.role.RoleDto;
 import com.tplate.layers.access.dtos.role.RoleResponseDto;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.layers.business.exceptions.*;
+import com.tplate.layers.business.exceptions.brand.BrandNameExistException;
+import com.tplate.layers.business.exceptions.brand.BrandNotExistException;
 import com.tplate.layers.business.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,17 +37,17 @@ public class BrandController {
                 .build();
     }
 
-//    @PostMapping(value = Endpoints.ROLE_NEW)
-//    @PreAuthorize("hasAuthority('CREATE_ROLES')")
-//    public ResponseDto createRole(@RequestBody(required = true) @Valid RoleDto roleDto) throws RoleNameExistException, RoleWithoutPermissionsException, PermissionNotExistException {
-//
-//        return ResponseDto.builder()
-//                .message("Role created.")
-//                .details("Role was created successfully.")
-//                .data(this.brandService.saveModel(roleDto), RoleResponseDto.class)
-//                .build();
-//
-//    }
+    @PostMapping(value = Endpoints.BRAND_NEW)
+    @PreAuthorize("hasAuthority('CREATE_BRANDS')")
+    public ResponseDto createBrand(@RequestBody(required = true) @Valid BrandDto brandDto) throws BrandNameExistException {
+
+        return ResponseDto.builder()
+                .message("Brand created.")
+                .details("Brand was created successfully.")
+                .data(this.brandService.saveModel(brandDto), BrandResponseDto.class)
+                .build();
+
+    }
 //
 //    @GetMapping(value = Endpoints.ROLE_READ_ONE)
 //    @PreAuthorize("hasAuthority('READ_USERS')")
@@ -56,16 +59,16 @@ public class BrandController {
 //                .build();
 //    }
 //
-//    @PutMapping(value = Endpoints.ROLE_UPDATE)
-//    @PreAuthorize("hasAuthority('UPDATE_ROLES')")
-//    public ResponseDto updateRole(@RequestBody(required = true) @Valid RoleDto roleDto, @PathVariable Long id) throws RoleWithoutPermissionsException, RoleNotExistException, RoleNameExistException, PermissionNotExistException {
-//        return ResponseDto.builder()
-//                .message("Role updated.")
-//                .details("Role was updated successfully.")
-//                .data(this.brandService.updateModel(roleDto, id), RoleResponseDto.class)
-//                .build();
-//
-//    }
+    @PutMapping(value = Endpoints.BRAND_UPDATE)
+    @PreAuthorize("hasAuthority('UPDATE_BRANDS')")
+    public ResponseDto updateRole(@RequestBody(required = true) @Valid BrandDto dto, @PathVariable Long id) throws BrandNotExistException, BrandNameExistException {
+        return ResponseDto.builder()
+                .message("Brand updated.")
+                .details("Brand was updated successfully.")
+                .data(this.brandService.updateModel(dto, id), BrandResponseDto.class)
+                .build();
+
+    }
 //
 //    @DeleteMapping(value = Endpoints.ROLE_DELETE)
 //    @PreAuthorize("hasAuthority('DELETE_ROLES')")

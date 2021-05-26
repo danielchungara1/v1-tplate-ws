@@ -1,8 +1,12 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.layers.business.exceptions.*;
 import com.tplate.layers.access.dtos.user.UserBaseDto;
 import com.tplate.layers.access.dtos.user.UserNewDto;
+import com.tplate.layers.business.exceptions.auth.EmailExistException;
+import com.tplate.layers.business.exceptions.auth.EmailNotFoundException;
+import com.tplate.layers.business.exceptions.role.RoleNotExistException;
+import com.tplate.layers.business.exceptions.user.UserNotExistException;
+import com.tplate.layers.business.exceptions.user.UsernameExistException;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.access.dtos.user.UserUpdateDto;
 import com.tplate.layers.persistence.repositories.UserRepository;

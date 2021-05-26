@@ -2,7 +2,7 @@ package com.tplate.layers.access.controllers;
 
 import com.tplate.ContainersTests;
 import com.tplate.layers.access.dtos.user.UserResponseDto;
-import com.tplate.layers.business.exceptions.UserNotExistException;
+import com.tplate.layers.business.exceptions.user.UserNotExistException;
 import com.tplate.layers.business.services.UserService;
 import com.tplate.layers.persistence.models.User;
 import com.tplate.layers.persistence.repositories.UserRepository;
