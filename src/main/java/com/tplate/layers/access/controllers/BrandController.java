@@ -48,17 +48,17 @@ public class BrandController {
                 .build();
 
     }
-//
-//    @GetMapping(value = Endpoints.ROLE_READ_ONE)
-//    @PreAuthorize("hasAuthority('READ_USERS')")
-//    public ResponseDto getRoleById(@PathVariable Long id) throws RoleNotExistException {
-//        return ResponseDto.builder()
-//                .message("Role data.")
-//                .details("Role data found successfully.")
-//                .data(this.brandService.getModelById(id), RoleResponseDto.class)
-//                .build();
-//    }
-//
+
+    @GetMapping(value = Endpoints.BRAND_READ_ONE)
+    @PreAuthorize("hasAuthority('READ_BRANDS')")
+    public ResponseDto getBrandById(@PathVariable Long id) throws BrandNotExistException {
+        return ResponseDto.builder()
+                .message("Brand data.")
+                .details("Brand data found successfully.")
+                .data(this.brandService.getModelById(id), BrandResponseDto.class)
+                .build();
+    }
+
     @PutMapping(value = Endpoints.BRAND_UPDATE)
     @PreAuthorize("hasAuthority('UPDATE_BRANDS')")
     public ResponseDto updateRole(@RequestBody(required = true) @Valid BrandDto dto, @PathVariable Long id) throws BrandNotExistException, BrandNameExistException {
@@ -69,16 +69,16 @@ public class BrandController {
                 .build();
 
     }
-//
-//    @DeleteMapping(value = Endpoints.ROLE_DELETE)
-//    @PreAuthorize("hasAuthority('DELETE_ROLES')")
-//    public ResponseSimpleDto deleteRole(@PathVariable Long id) throws RoleNotExistException, RoleMustNotBeDeletedException {
-//        this.brandService.deleteModelById(id);
-//        return ResponseSimpleDto.builder()
-//                .message("Role deleted.")
-//                .details("The role was deleted successfully.")
-//                .build();
-//    }
+
+    @DeleteMapping(value = Endpoints.BRAND_DELETE)
+    @PreAuthorize("hasAuthority('DELETE_BRANDS')")
+    public ResponseSimpleDto delete(@PathVariable Long id) throws BrandNotExistException {
+        this.brandService.deleteModelById(id);
+        return ResponseSimpleDto.builder()
+                .message("Brand deleted.")
+                .details("The brand was deleted successfully.")
+                .build();
+    }
 
 }
 
