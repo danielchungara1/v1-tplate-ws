@@ -1,6 +1,6 @@
 package com.tplate.layers.business.shared;
 
-import com.tplate.layers.business.exceptions.RoleNameNotExistException;
+import com.tplate.layers.business.exceptions.role.RoleNameNotExistException;
 import com.tplate.layers.business.services.RoleService;
 import com.tplate.layers.persistence.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;

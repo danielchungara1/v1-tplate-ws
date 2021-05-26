@@ -2,7 +2,6 @@ package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.permission.PermissionResponseDto;
-import com.tplate.layers.access.dtos.role.RoleResponseDto;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.layers.business.services.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class PermissionController {
     @Autowired
     PermissionService permissionService;
 
-    @GetMapping(value = Endpoints.PERMISSIONS_READ_ALL)
+    @GetMapping(value = Endpoints.PERMISSION_READ_ALL)
     @PreAuthorize("hasAuthority('READ_PERMISSIONS')")
     @Transactional
     public ResponseDto findAll() {

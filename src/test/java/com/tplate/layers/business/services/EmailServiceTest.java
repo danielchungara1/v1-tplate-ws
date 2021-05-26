@@ -2,7 +2,7 @@ package com.tplate.layers.business.services;
 
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.tplate.ContainersTests;
-import com.tplate.layers.business.exceptions.EmailSenderException;
+import com.tplate.layers.business.exceptions.auth.EmailSenderException;
 import com.tplate.layers.business.services.authService.EmailResetCode;
 import com.tplate.layers.business.services.authService.EmailService;
 import lombok.extern.slf4j.Slf4j;

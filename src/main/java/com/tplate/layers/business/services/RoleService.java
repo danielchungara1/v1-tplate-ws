@@ -1,7 +1,8 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.role.RoleDto;
-import com.tplate.layers.business.exceptions.*;
+import com.tplate.layers.business.exceptions.permission.PermissionNotExistException;
+import com.tplate.layers.business.exceptions.role.*;
 import com.tplate.layers.business.shared.RolesConfig;
 import com.tplate.layers.persistence.models.Permission;
 import com.tplate.layers.persistence.models.Role;

@@ -6,7 +6,7 @@ import com.tplate.ContainersTests;
 import com.tplate.layers.access.dtos.auth.LoginDto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep1Dto;
 import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
-import com.tplate.layers.business.exceptions.*;
+import com.tplate.layers.business.exceptions.auth.*;
 import com.tplate.layers.business.services.authService.AuthService;
 import com.tplate.layers.business.services.authService.LoginModel;
 import com.tplate.layers.persistence.models.User;

@@ -1,10 +1,10 @@
 package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.user.*;
-import com.tplate.layers.business.exceptions.EmailExistException;
-import com.tplate.layers.business.exceptions.RoleNotExistException;
-import com.tplate.layers.business.exceptions.UserNotExistException;
-import com.tplate.layers.business.exceptions.UsernameExistException;
+import com.tplate.layers.business.exceptions.auth.EmailExistException;
+import com.tplate.layers.business.exceptions.role.RoleNotExistException;
+import com.tplate.layers.business.exceptions.user.UserNotExistException;
+import com.tplate.layers.business.exceptions.user.UsernameExistException;
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.services.UserService;

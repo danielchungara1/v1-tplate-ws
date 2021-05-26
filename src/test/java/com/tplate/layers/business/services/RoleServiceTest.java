@@ -1,7 +1,7 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.ContainersTests;
-import com.tplate.layers.business.exceptions.RoleNotExistException;
+import com.tplate.layers.business.exceptions.role.RoleNotExistException;
 import com.tplate.layers.persistence.models.Permission;
 import com.tplate.layers.persistence.models.Role;
 import com.tplate.layers.persistence.repositories.PermissionRepository;
