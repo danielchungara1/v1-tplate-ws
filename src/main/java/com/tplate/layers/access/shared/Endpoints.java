@@ -26,5 +26,8 @@ public class Endpoints {
     public static final String PERMISSIONS = BASE_PATH + "/permissions";
     public static final String PERMISSIONS_READ_ALL =  PERMISSIONS + "/all";
 
+    public static final String BRANDS = BASE_PATH + "/brands";
+    public static final String BRAND_READ_ALL =  BRANDS + "/all";
+
 
 }
