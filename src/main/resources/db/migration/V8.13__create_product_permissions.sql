@@ -1,0 +1,5 @@
+INSERT INTO permission(name, description)
+values ('CREATE_PRODUCTS', 'CREATE PRODUCTS'),
+       ('READ_PRODUCTS', 'READ PRODUCTS'),
+       ('UPDATE_PRODUCTS', 'UPDATE PRODUCTS'),
+       ('DELETE_PRODUCTS', 'DELETE PRODUCTS');

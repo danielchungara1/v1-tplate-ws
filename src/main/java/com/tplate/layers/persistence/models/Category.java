@@ -6,15 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "brand")
+@Table(name = "category")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Brand {
+public class Category {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -30,12 +32,20 @@ public class Brand {
     @Column(name = "title")
     private String title;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_parent_id")
+    private Set<Category> children;
+
+    @Column(name = "category_parent_id")
+    private Long parentId;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Brand brand = (Brand) o;
-        return id.equals(brand.id);
+        Category category = (Category) o;
+        return id.equals(category.id);
     }
 
     @Override
