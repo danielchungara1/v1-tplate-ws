@@ -3,7 +3,9 @@
 
 ## Demo
 - https://v1-tplate-ws.herokuapp.com
-- Use role id = 1 for create new users with highest privileges.
+- Credentials
+    - username: administrador 
+    - password: tplate
 
 ## Screenshots
 - Swagger
