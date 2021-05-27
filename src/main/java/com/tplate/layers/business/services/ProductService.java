@@ -145,4 +145,26 @@ public class ProductService {
 
     }
 
+    public List<Product> getModelsBy(Brand brand) {
+
+        if (brand == null) {
+            BrandNotExistException.throwsException(null);
+        }
+
+        return this.repository.findByBrand(brand);
+
+    }
+
+    public void makeBrandNullForAllProductsBy(Brand brand) {
+
+        List<Product> products = this.getModelsBy(brand);
+
+        if (products != null) {
+            products.parallelStream().forEach(product -> {
+                product.setBrand(null);
+                this.repository.save(product);
+            });
+        }
+
+    }
 }

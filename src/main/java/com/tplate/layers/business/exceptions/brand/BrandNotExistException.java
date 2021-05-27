@@ -11,4 +11,5 @@ public class BrandNotExistException extends BusinessRuntimeException {
     public static void throwsException(Long id) throws BrandNotExistException {
         throw new BrandNotExistException(id);
     }
+
 }

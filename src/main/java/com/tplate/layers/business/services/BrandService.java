@@ -4,6 +4,7 @@ import com.tplate.layers.access.dtos.brand.BrandDto;
 import com.tplate.layers.business.exceptions.brand.BrandNameExistException;
 import com.tplate.layers.business.exceptions.brand.BrandNotExistException;
 import com.tplate.layers.persistence.models.Brand;
+import com.tplate.layers.persistence.models.Product;
 import com.tplate.layers.persistence.repositories.BrandRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Log4j2
@@ -19,6 +21,8 @@ public class BrandService {
     @Autowired
     BrandRepository repository;
 
+    @Autowired
+    ProductService productService;
 
     @Transactional
     public Brand getModelById(Long id) throws BrandNotExistException {
@@ -88,6 +92,11 @@ public class BrandService {
         if (!this.repository.existsById(id)) {
             BrandNotExistException.throwsException(id);
         }
+
+        // If a product has a relationship with the brand to delete then the product must be a brand null.
+        Brand brand = this.getModelById(id);
+
+        this.productService.makeBrandNullForAllProductsBy(brand);
 
         this.repository.deleteById(id);
 
