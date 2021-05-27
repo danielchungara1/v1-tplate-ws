@@ -18,4 +18,7 @@ public class ProductDto {
     @NotBlank(message = "title is required")
     private String title;
 
+    private Long brandId;
+    private Long categoryId;
+
 }

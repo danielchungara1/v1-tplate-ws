@@ -1,8 +1,8 @@
 package com.tplate.layers.business.exceptions.brand;
 
-import com.tplate.layers.business.exceptions.BusinessException;
+import com.tplate.layers.business.exceptions.BusinessRuntimeException;
 
-public class BrandNotExistException extends BusinessException {
+public class BrandNotExistException extends BusinessRuntimeException {
 
     public BrandNotExistException(Long id) {
         super("Brand not found." , "The brand sent is not recognized. " + id);

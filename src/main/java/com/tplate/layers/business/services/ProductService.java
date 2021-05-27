@@ -1,8 +1,11 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.product.ProductDto;
+import com.tplate.layers.business.exceptions.brand.BrandNotExistException;
 import com.tplate.layers.business.exceptions.product.ProductNameExistException;
 import com.tplate.layers.business.exceptions.product.ProductNotExistException;
+import com.tplate.layers.persistence.models.Brand;
+import com.tplate.layers.persistence.models.Category;
 import com.tplate.layers.persistence.models.Product;
 import com.tplate.layers.persistence.repositories.ProductRepository;
 import lombok.extern.log4j.Log4j2;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @Log4j2
@@ -19,10 +23,18 @@ public class ProductService {
     @Autowired
     ProductRepository repository;
 
+    @Autowired
+    BrandService brandService;
+
+    @Autowired
+    CategoryService categoryService;
+
     @Transactional
     public Product getModelById(Long id) throws ProductNotExistException {
 
-        if (id == null) { ProductNotExistException.throwsException(id); }
+        if (id == null) {
+            ProductNotExistException.throwsException(id);
+        }
 
         return this.repository.findById(id)
                 .orElseThrow(() -> new ProductNotExistException(id));
@@ -45,7 +57,25 @@ public class ProductService {
         Product model = Product.builder().build();
         model.setName(dto.getName());
 
-        return this.saveOrUpdateModel(model, dto);
+        Function<Product, Product> saveBrandCallback = (modelPP) -> {
+            if (dto.getBrandId() != null) {
+                modelPP.setBrand(this.brandService.getModelById(dto.getBrandId()));
+                return this.repository.save(modelPP);
+            } else {
+                return modelPP;
+            }
+        };
+
+        Function<Product, Product> saveCategoryCallback = (modelPP) -> {
+            if (dto.getCategoryId() != null) {
+                modelPP.setCategory(this.categoryService.getModelById(dto.getCategoryId()));
+                return this.repository.save(modelPP);
+            } else {
+                return modelPP;
+            }
+        };
+
+        return this.saveOrUpdateModel(model, dto, saveBrandCallback, saveCategoryCallback);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -54,7 +84,7 @@ public class ProductService {
         Product model = this.getModelById(id);
 
         // Product name False Positive.
-        if ( !this.repository.existsByName(dto.getName()) ) {
+        if (!this.repository.existsByName(dto.getName())) {
             model.setName(dto.getName());
         } else {
             if (model.getName().equals(dto.getName())) {
@@ -64,17 +94,42 @@ public class ProductService {
             }
         }
 
-        return this.saveOrUpdateModel(model, dto);
+        Function<Product, Product> saveBrandCallback = (modelPP) -> {
+            if (dto.getBrandId() != null) {
+                modelPP.setBrand(this.brandService.getModelById(dto.getBrandId()));
+                return this.repository.save(modelPP);
+            } else {
+                modelPP.setBrand(null);
+                return this.repository.save(modelPP);
+            }
+        };
+
+        Function<Product, Product> saveCategoryCallback = (modelPP) -> {
+            if (dto.getCategoryId() != null) {
+                modelPP.setCategory(this.categoryService.getModelById(dto.getCategoryId()));
+                return this.repository.save(modelPP);
+            } else {
+                modelPP.setCategory(null);
+                return this.repository.save(modelPP);
+            }
+        };
+
+        return this.saveOrUpdateModel(model, dto, saveBrandCallback, saveCategoryCallback);
     }
 
 
-    private Product saveOrUpdateModel(Product model, ProductDto dto) {
+    private Product saveOrUpdateModel(Product model, ProductDto dto, Function<Product, Product> saveBrandCallback, Function<Product, Product> saveCategoryCallback) throws BrandNotExistException {
 
         // Product Description, Title
         model.setDescription(dto.getDescription());
         model.setTitle(dto.getTitle());
-        
-        return this.repository.save(model);
+
+        model = this.repository.save(model);
+
+        saveBrandCallback.apply(model);
+        saveCategoryCallback.apply(model);
+
+        return model;
 
     }
 
@@ -85,9 +140,9 @@ public class ProductService {
         if (!this.repository.existsById(id)) {
             ProductNotExistException.throwsException(id);
         }
-        
+
         this.repository.deleteById(id);
 
     }
-    
+
 }
