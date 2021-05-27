@@ -2,6 +2,7 @@ package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.product.ProductDto;
 import com.tplate.layers.business.exceptions.brand.BrandNotExistException;
+import com.tplate.layers.business.exceptions.category.CategoryNotExistException;
 import com.tplate.layers.business.exceptions.product.ProductNameExistException;
 import com.tplate.layers.business.exceptions.product.ProductNotExistException;
 import com.tplate.layers.persistence.models.Brand;
@@ -155,6 +156,16 @@ public class ProductService {
 
     }
 
+    public List<Product> getModelsBy(Category category) {
+
+        if (category == null) {
+            CategoryNotExistException.throwsException(null);
+        }
+
+        return this.repository.findByCategory(category);
+
+    }
+
     public void makeBrandNullForAllProductsBy(Brand brand) {
 
         List<Product> products = this.getModelsBy(brand);
@@ -167,4 +178,18 @@ public class ProductService {
         }
 
     }
+
+    public void makeCategoryNullForAllProductsBy(Category category) {
+
+        List<Product> products = this.getModelsBy(category);
+
+        if (products != null) {
+            products.parallelStream().forEach(product -> {
+                product.setCategory(null);
+                this.repository.save(product);
+            });
+        }
+
+    }
+
 }

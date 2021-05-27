@@ -3,6 +3,7 @@ package com.tplate.layers.business.services;
 import com.tplate.layers.access.dtos.category.CategoryDto;
 import com.tplate.layers.business.exceptions.category.CategoryNameExistException;
 import com.tplate.layers.business.exceptions.category.CategoryNotExistException;
+import com.tplate.layers.persistence.models.Brand;
 import com.tplate.layers.persistence.models.Category;
 import com.tplate.layers.persistence.repositories.CategoryRepository;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +20,9 @@ public class CategoryService {
 
     @Autowired
     CategoryRepository repository;
+
+    @Autowired
+    ProductService productService;
 
     @Transactional
     public Category getModelById(Long id) throws CategoryNotExistException {
@@ -81,8 +85,7 @@ public class CategoryService {
                 Category parent = getModelById(dto.getParentId());
                 parent.getChildren().add(modelPP); // For saving category_parent_id into child
                 this.repository.save(parent);
-            }
-            else {
+            } else {
                 Long parentId = model.getParentId();
                 if (parentId != null) {
                     Category parent = getModelById(model.getParentId());
@@ -117,7 +120,25 @@ public class CategoryService {
             CategoryNotExistException.throwsException(id);
         }
 
+        // If a product has a relationship with the category to delete then the product must be a category null.
+        Category category = this.getModelById(id);
+        this.productService.makeCategoryNullForAllProductsBy(category); // Apply on root category
+        this.recursive(category); // Apply on children and all its descendants
+
         this.repository.deleteById(id);
+
+    }
+
+    private void recursive(Category category) {
+
+        if (category.getChildren().isEmpty()) {
+            return;
+        }
+
+        category.getChildren().parallelStream().forEach(child -> {
+            this.productService.makeCategoryNullForAllProductsBy(child);
+            recursive(child);
+        });
 
     }
 
