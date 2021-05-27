@@ -81,7 +81,7 @@ public class CategoryController {
         this.service.deleteModelById(id);
         return ResponseSimpleDto.builder()
                 .message("Category deleted.")
-                .details("The category was deleted successfully.")
+                .details("The category was deleted successfully and all its descendant subcategories.")
                 .build();
     }
 

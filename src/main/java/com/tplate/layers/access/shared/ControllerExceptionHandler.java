@@ -2,6 +2,7 @@ package com.tplate.layers.access.shared;
 
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.exceptions.BusinessException;
+import com.tplate.layers.business.exceptions.BusinessRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -23,12 +24,25 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Slf4j
 public class ControllerExceptionHandler {
 
-    // Business Exceptions
+    // Business Checked Exceptions
     @ExceptionHandler({
             BusinessException.class,
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseSimpleDto badRequestExceptionHandler(BusinessException e) {
+        log.error(e.getMessage());
+        return ResponseSimpleDto.builder()
+                .message(e.getMessage())
+                .details(e.getDetails())
+                .build();
+    }
+
+    // Business Runtime Exceptions
+    @ExceptionHandler({
+            BusinessRuntimeException.class,
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseSimpleDto badRequestExceptionHandler(BusinessRuntimeException e) {
         log.error(e.getMessage());
         return ResponseSimpleDto.builder()
                 .message(e.getMessage())

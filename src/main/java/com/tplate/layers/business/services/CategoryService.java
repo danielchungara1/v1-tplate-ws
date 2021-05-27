@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @Log4j2
@@ -22,7 +23,9 @@ public class CategoryService {
     @Transactional
     public Category getModelById(Long id) throws CategoryNotExistException {
 
-        if (id == null) { CategoryNotExistException.throwsException(id); }
+        if (id == null) {
+            CategoryNotExistException.throwsException(id);
+        }
 
         return this.repository.findById(id)
                 .orElseThrow(() -> new CategoryNotExistException(id));
@@ -45,7 +48,16 @@ public class CategoryService {
         Category model = Category.builder().build();
         model.setName(dto.getName());
 
-        return this.saveOrUpdateModel(model, dto);
+        Function<Category, Category> saveParentCallback = (Category modelPP) -> {
+            if (dto.getParentId() != null) {
+                Category parent = getModelById(dto.getParentId());
+                parent.getChildren().add(modelPP); // For saving category_parent_id into child
+                this.repository.save(parent);
+            }
+            return modelPP;
+        };
+
+        return this.saveOrUpdateModel(model, dto, saveParentCallback);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -54,7 +66,7 @@ public class CategoryService {
         Category model = this.getModelById(id);
 
         // Category name False Positive.
-        if ( !this.repository.existsByName(dto.getName()) ) {
+        if (!this.repository.existsByName(dto.getName())) {
             model.setName(dto.getName());
         } else {
             if (model.getName().equals(dto.getName())) {
@@ -64,17 +76,36 @@ public class CategoryService {
             }
         }
 
-        return this.saveOrUpdateModel(model, dto);
+        Function<Category, Category> saveParentCallback = (Category modelPP) -> {
+            if (dto.getParentId() != null) {
+                Category parent = getModelById(dto.getParentId());
+                parent.getChildren().add(modelPP); // For saving category_parent_id into child
+                this.repository.save(parent);
+            }
+            else {
+                Long parentId = model.getParentId();
+                if (parentId != null) {
+                    Category parent = getModelById(model.getParentId());
+                    parent.getChildren().remove(modelPP); // The child is converted to root category.
+                    this.repository.save(parent);
+                }
+            }
+            return modelPP;
+        };
+
+        return this.saveOrUpdateModel(model, dto, saveParentCallback);
     }
 
 
-    private Category saveOrUpdateModel(Category model, CategoryDto dto) {
+    private Category saveOrUpdateModel(Category model, CategoryDto dto, Function<Category, Category> saveParentCallback) {
 
         // Category Description, Title
         model.setDescription(dto.getDescription());
         model.setTitle(dto.getTitle());
 
-        return this.repository.save(model);
+        model = this.repository.save(model);
+
+        return saveParentCallback.apply(model);
 
     }
 

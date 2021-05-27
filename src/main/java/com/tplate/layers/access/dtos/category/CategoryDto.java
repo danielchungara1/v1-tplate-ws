@@ -18,4 +18,6 @@ public class CategoryDto {
     @NotBlank(message = "title is required")
     private String title;
 
+    private Long parentId;
+
 }
