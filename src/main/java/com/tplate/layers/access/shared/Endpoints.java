@@ -34,6 +34,19 @@ public class Endpoints {
     public static final String BRAND_READ_ONE = BRAND + "/{id}";
     public static final String BRAND_DELETE = BRAND + "/{id}";
 
+    public static final String CATEGORY = BASE_PATH + "/categories";
+    public static final String CATEGORY_NEW = CATEGORY + "/new-category";
+    public static final String CATEGORY_UPDATE = CATEGORY + "/{id}";
+    public static final String CATEGORY_READ_ONE = CATEGORY + "/{id}";
+    public static final String CATEGORY_DELETE = CATEGORY + "/{id}";
+    public static final String CATEGORY_READ_ALL = CATEGORY + "/all";
+
+    public static final String PRODUCT = BASE_PATH + "/products";
+    public static final String PRODUCT_NEW = PRODUCT + "/new-product";
+    public static final String PRODUCT_UPDATE = PRODUCT + "/{id}";
+    public static final String PRODUCT_READ_ONE = PRODUCT + "/{id}";
+    public static final String PRODUCT_DELETE = PRODUCT + "/{id}";
+    public static final String PRODUCT_READ_ALL = PRODUCT + "/all";
 
 
 }
