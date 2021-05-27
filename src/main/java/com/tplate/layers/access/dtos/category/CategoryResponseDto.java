@@ -8,4 +8,5 @@ public class CategoryResponseDto {
     private String name;
     private String description;
     private String title;
+    private Long parentId;
 }

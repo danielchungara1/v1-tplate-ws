@@ -3,6 +3,7 @@ package com.tplate.layers.business.services;
 import com.tplate.layers.access.dtos.category.CategoryDto;
 import com.tplate.layers.business.exceptions.category.CategoryNameExistException;
 import com.tplate.layers.business.exceptions.category.CategoryNotExistException;
+import com.tplate.layers.business.exceptions.category.CategorySelfReferenceException;
 import com.tplate.layers.persistence.models.Brand;
 import com.tplate.layers.persistence.models.Category;
 import com.tplate.layers.persistence.repositories.CategoryRepository;
@@ -83,6 +84,7 @@ public class CategoryService {
         Function<Category, Category> saveParentCallback = (Category modelPP) -> {
             if (dto.getParentId() != null) {
                 Category parent = getModelById(dto.getParentId());
+                if (parent.equals(modelPP)){ CategorySelfReferenceException.throwsException(modelPP.getName());}
                 parent.getChildren().add(modelPP); // For saving category_parent_id into child
                 this.repository.save(parent);
             } else {
