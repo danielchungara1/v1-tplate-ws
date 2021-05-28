@@ -98,7 +98,7 @@ public class ControllerExceptionHandler {
         log.error(e.getMessage());
         return ResponseSimpleDto.builder()
                 .message(e.hasErrors() ? e.getAllErrors().get(0).getDefaultMessage() :"Method Argument invalid.")
-                .details(e.getMessage())
+                .details(UtilString.truncateBySubstringOrElseReturnDefaultString(e.getMessage(), "in public", "Method Argument invalid."))
                 .build();
     }
 
