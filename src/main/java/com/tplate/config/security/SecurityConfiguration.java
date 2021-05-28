@@ -60,9 +60,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //Public and private Paths
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "*").permitAll()
-                .antMatchers(Endpoints.AUTH + "/*").permitAll()
-                // Disallow everything else..
-                .antMatchers(Endpoints.USER + "/*").authenticated();
+                .antMatchers(Endpoints.AUTH + "/*").permitAll();
+                // To disallow everything else every endpoint have their security annotations.
+
         //Apply JWT
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtExceptionHandlerFilter, JwtAuthorizationFilter.class);
