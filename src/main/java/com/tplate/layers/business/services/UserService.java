@@ -5,6 +5,7 @@ import com.tplate.layers.access.dtos.user.UserNewDto;
 import com.tplate.layers.business.exceptions.auth.EmailExistException;
 import com.tplate.layers.business.exceptions.auth.EmailNotFoundException;
 import com.tplate.layers.business.exceptions.role.RoleNotExistException;
+import com.tplate.layers.business.exceptions.user.UserCannotBeDeleteException;
 import com.tplate.layers.business.exceptions.user.UserNotExistException;
 import com.tplate.layers.business.exceptions.user.UsernameExistException;
 import com.tplate.layers.persistence.models.User;
@@ -104,10 +105,14 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteModelById(Long id) throws UserNotExistException {
+    public void deleteModelById(Long id) throws UserNotExistException, UserCannotBeDeleteException {
 
         if (!this.userRepository.existsById(id)) {
             UserNotExistException.throwsException(id);
+        }
+
+        if (!this.userRepository.getOneById(id).getDeletable()) {
+            UserCannotBeDeleteException.throwsException(id);
         }
 
         this.userRepository.deleteById(id);

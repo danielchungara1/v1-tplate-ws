@@ -3,6 +3,7 @@ package com.tplate.layers.access.controllers;
 import com.tplate.layers.access.dtos.user.*;
 import com.tplate.layers.business.exceptions.auth.EmailExistException;
 import com.tplate.layers.business.exceptions.role.RoleNotExistException;
+import com.tplate.layers.business.exceptions.user.UserCannotBeDeleteException;
 import com.tplate.layers.business.exceptions.user.UserNotExistException;
 import com.tplate.layers.business.exceptions.user.UsernameExistException;
 import com.tplate.layers.access.dtos.ResponseDto;
@@ -58,7 +59,7 @@ public class UserController {
 
     @DeleteMapping(value = Endpoints.USER_DELETE)
     @PreAuthorize("hasAuthority('DELETE_USERS')")
-    public ResponseSimpleDto deleteUser(@PathVariable Long id) throws UserNotExistException {
+    public ResponseSimpleDto deleteUser(@PathVariable Long id) throws UserNotExistException, UserCannotBeDeleteException {
         this.userService.deleteModelById(id);
         return ResponseSimpleDto.builder()
                 .message("User deleted.")

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
@@ -37,7 +38,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+    @Column(name = "deletable")
+    private Boolean deletable;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "password_recovery_id", unique = true)
     private PasswordRecovery passwordRecovery;
 
@@ -48,5 +52,13 @@ public class User {
     @Transient
     private String token;
 
+    @PrePersist
+    public void prePersist() {
+
+        if (this.getDeletable() == null) {
+            this.setDeletable(Boolean.TRUE);
+        }
+
+    }
 
 }
