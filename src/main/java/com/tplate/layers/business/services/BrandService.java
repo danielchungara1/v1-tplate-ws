@@ -1,11 +1,10 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.brand.BrandDto;
-import com.tplate.layers.access.filters.SearchText;
+import com.tplate.layers.access.shared.SearchText;
 import com.tplate.layers.business.exceptions.brand.BrandNameExistException;
 import com.tplate.layers.business.exceptions.brand.BrandNotExistException;
 import com.tplate.layers.persistence.models.Brand;
-import com.tplate.layers.persistence.models.Product;
 import com.tplate.layers.persistence.repositories.BrandRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Log4j2

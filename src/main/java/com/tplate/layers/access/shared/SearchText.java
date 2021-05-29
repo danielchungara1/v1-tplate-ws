@@ -1,4 +1,4 @@
-package com.tplate.layers.access.filters;
+package com.tplate.layers.access.shared;
 
 import lombok.Data;
 

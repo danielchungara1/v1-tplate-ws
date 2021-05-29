@@ -3,7 +3,7 @@ package com.tplate.layers.access.controllers;
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.permission.PermissionPageDto;
 import com.tplate.layers.access.dtos.permission.PermissionResponseDto;
-import com.tplate.layers.access.filters.SearchText;
+import com.tplate.layers.access.shared.SearchText;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.layers.business.services.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;

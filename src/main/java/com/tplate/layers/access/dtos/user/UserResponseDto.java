@@ -1,6 +1,5 @@
 package com.tplate.layers.access.dtos.user;
 
-import com.tplate.layers.access.dtos.role.RoleResponseDto;
 import lombok.Data;
 
 /**
@@ -15,5 +14,12 @@ public class UserResponseDto {
     private String name;
     private String phone;
     private String username;
-    private RoleResponseDto role;
+    private UserRoleDto role;
+
+    @Data
+    private static class UserRoleDto {
+        private Long id;
+        private String name;
+        private String description;
+    }
 }

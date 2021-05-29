@@ -2,11 +2,10 @@ package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
-import com.tplate.layers.access.dtos.brand.BrandPageDto;
 import com.tplate.layers.access.dtos.role.RoleDto;
 import com.tplate.layers.access.dtos.role.RolePageDto;
 import com.tplate.layers.access.dtos.role.RoleResponseDto;
-import com.tplate.layers.access.filters.SearchText;
+import com.tplate.layers.access.specifications.RoleSpecification;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.layers.business.exceptions.permission.PermissionNotExistException;
 import com.tplate.layers.business.exceptions.role.RoleMustNotBeDeletedException;
@@ -87,12 +86,12 @@ public class RoleController {
     @GetMapping(value = Endpoints.ROLE)
     @PreAuthorize("hasAuthority('READ_ROLES')")
     @Transactional
-    public ResponseDto find(Pageable pageable, SearchText searchText) {
+    public ResponseDto find(Pageable pageable, RoleSpecification specification) {
 
         return ResponseDto.builder()
                 .message("Roles fetched.")
                 .details("Roles fetched successfully.")
-                .data(this.service.find(pageable, searchText), RolePageDto.class)
+                .data(this.service.find(pageable, specification), RolePageDto.class)
                 .build();
     }
 

@@ -1,7 +1,7 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.role.RoleDto;
-import com.tplate.layers.access.filters.SearchText;
+import com.tplate.layers.access.specifications.RoleSpecification;
 import com.tplate.layers.business.exceptions.permission.PermissionNotExistException;
 import com.tplate.layers.business.exceptions.role.*;
 import com.tplate.layers.business.shared.RolesConfig;
@@ -133,7 +133,7 @@ public class RoleService {
 
 
     @Transactional
-    public Page find(Pageable pageable, SearchText searchText) {
-        return this.repository.findAll(pageable, searchText.getText());
+    public Page find(Pageable pageable, RoleSpecification specification) {
+        return this.repository.findAll(specification, pageable);
     }
 }

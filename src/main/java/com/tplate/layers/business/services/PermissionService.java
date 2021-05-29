@@ -1,6 +1,6 @@
 package com.tplate.layers.business.services;
 
-import com.tplate.layers.access.filters.SearchText;
+import com.tplate.layers.access.shared.SearchText;
 import com.tplate.layers.business.exceptions.permission.PermissionNotExistException;
 import com.tplate.layers.persistence.models.Permission;
 import com.tplate.layers.persistence.repositories.PermissionRepository;
