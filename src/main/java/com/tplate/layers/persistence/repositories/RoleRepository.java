@@ -1,6 +1,8 @@
 package com.tplate.layers.persistence.repositories;
 
 import com.tplate.layers.persistence.models.Role;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +33,8 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Role getByName(String name);
 
+    @Query("select p from Role p " +
+            "where LOWER(p.name) like %:text% " +
+            "or    LOWER(p.description) like %:text% ")
+    Page findAll(Pageable pageable, String text);
 }

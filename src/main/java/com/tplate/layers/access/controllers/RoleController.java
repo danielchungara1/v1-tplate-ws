@@ -2,8 +2,11 @@ package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
+import com.tplate.layers.access.dtos.brand.BrandPageDto;
 import com.tplate.layers.access.dtos.role.RoleDto;
+import com.tplate.layers.access.dtos.role.RolePageDto;
 import com.tplate.layers.access.dtos.role.RoleResponseDto;
+import com.tplate.layers.access.filters.SearchText;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.layers.business.exceptions.permission.PermissionNotExistException;
 import com.tplate.layers.business.exceptions.role.RoleMustNotBeDeletedException;
@@ -12,6 +15,7 @@ import com.tplate.layers.business.exceptions.role.RoleNotExistException;
 import com.tplate.layers.business.exceptions.role.RoleWithoutPermissionsException;
 import com.tplate.layers.business.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +27,7 @@ import javax.validation.Valid;
 public class RoleController {
 
     @Autowired
-    RoleService roleService;
+    RoleService service;
 
     @GetMapping(value = Endpoints.ROLE_READ_ALL)
     @PreAuthorize("hasAuthority('READ_ROLES')")
@@ -33,7 +37,7 @@ public class RoleController {
         return ResponseDto.builder()
                 .message("All roles fetched.")
                 .details("All roles fetched successfully.")
-                .data(this.roleService.findAll(), RoleResponseDto[].class)
+                .data(this.service.findAll(), RoleResponseDto[].class)
                 .build();
     }
 
@@ -44,7 +48,7 @@ public class RoleController {
         return ResponseDto.builder()
                 .message("Role created.")
                 .details("Role was created successfully.")
-                .data(this.roleService.saveModel(roleDto), RoleResponseDto.class)
+                .data(this.service.saveModel(roleDto), RoleResponseDto.class)
                 .build();
 
     }
@@ -55,7 +59,7 @@ public class RoleController {
         return ResponseDto.builder()
                 .message("Role data.")
                 .details("Role data found successfully.")
-                .data(this.roleService.getModelById(id), RoleResponseDto.class)
+                .data(this.service.getModelById(id), RoleResponseDto.class)
                 .build();
     }
 
@@ -65,7 +69,7 @@ public class RoleController {
         return ResponseDto.builder()
                 .message("Role updated.")
                 .details("Role was updated successfully.")
-                .data(this.roleService.updateModel(roleDto, id), RoleResponseDto.class)
+                .data(this.service.updateModel(roleDto, id), RoleResponseDto.class)
                 .build();
 
     }
@@ -73,10 +77,22 @@ public class RoleController {
     @DeleteMapping(value = Endpoints.ROLE_DELETE)
     @PreAuthorize("hasAuthority('DELETE_ROLES')")
     public ResponseSimpleDto deleteRole(@PathVariable Long id) throws RoleNotExistException, RoleMustNotBeDeletedException {
-        this.roleService.deleteModelById(id);
+        this.service.deleteModelById(id);
         return ResponseSimpleDto.builder()
                 .message("Role deleted.")
                 .details("The role was deleted successfully.")
+                .build();
+    }
+
+    @GetMapping(value = Endpoints.ROLE)
+    @PreAuthorize("hasAuthority('READ_ROLES')")
+    @Transactional
+    public ResponseDto find(Pageable pageable, SearchText searchText) {
+
+        return ResponseDto.builder()
+                .message("Roles fetched.")
+                .details("Roles fetched successfully.")
+                .data(this.service.find(pageable, searchText), RolePageDto.class)
                 .build();
     }
 
