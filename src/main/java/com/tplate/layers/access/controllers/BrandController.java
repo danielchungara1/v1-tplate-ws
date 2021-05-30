@@ -3,15 +3,15 @@ package com.tplate.layers.access.controllers;
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.access.dtos.brand.BrandDto;
+import com.tplate.layers.access.dtos.brand.BrandPageDto;
 import com.tplate.layers.access.dtos.brand.BrandResponseDto;
-import com.tplate.layers.access.dtos.role.RoleDto;
-import com.tplate.layers.access.dtos.role.RoleResponseDto;
+import com.tplate.layers.access.shared.SearchText;
 import com.tplate.layers.access.shared.Endpoints;
-import com.tplate.layers.business.exceptions.*;
 import com.tplate.layers.business.exceptions.brand.BrandNameExistException;
 import com.tplate.layers.business.exceptions.brand.BrandNotExistException;
 import com.tplate.layers.business.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +77,18 @@ public class BrandController {
         return ResponseSimpleDto.builder()
                 .message("Brand deleted.")
                 .details("The brand was deleted successfully.")
+                .build();
+    }
+
+    @GetMapping(value = Endpoints.BRAND)
+    @PreAuthorize("hasAuthority('READ_BRANDS')")
+    @Transactional
+    public ResponseDto find(Pageable pageable, SearchText searchText) {
+
+        return ResponseDto.builder()
+                .message("Brands fetched.")
+                .details("Brands fetched successfully.")
+                .data(this.brandService.find(pageable, searchText), BrandPageDto.class)
                 .build();
     }
 

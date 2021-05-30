@@ -2,16 +2,16 @@ package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
-import com.tplate.layers.access.dtos.category.CategoryDto;
-import com.tplate.layers.access.dtos.category.CategoryResponseDto;
 import com.tplate.layers.access.dtos.product.ProductDto;
+import com.tplate.layers.access.dtos.product.ProductPageDto;
 import com.tplate.layers.access.dtos.product.ProductResponseDto;
 import com.tplate.layers.access.shared.Endpoints;
+import com.tplate.layers.access.specifications.ProductSpecification;
 import com.tplate.layers.business.exceptions.product.ProductNameExistException;
 import com.tplate.layers.business.exceptions.product.ProductNotExistException;
-import com.tplate.layers.business.services.CategoryService;
 import com.tplate.layers.business.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +77,18 @@ public class ProductController {
         return ResponseSimpleDto.builder()
                 .message("Product deleted.")
                 .details("The product was deleted successfully.")
+                .build();
+    }
+
+    @GetMapping(value = Endpoints.PRODUCT)
+    @PreAuthorize("hasAuthority('READ_PRODUCTS')")
+    @Transactional
+    public ResponseDto find(Pageable pageable, ProductSpecification specification) {
+
+        return ResponseDto.builder()
+                .message("Products fetched.")
+                .details("Products fetched successfully.")
+                .data(this.service.findAll(pageable, specification), ProductPageDto.class)
                 .build();
     }
 

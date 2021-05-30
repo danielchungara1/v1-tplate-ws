@@ -2,6 +2,7 @@ package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.user.UserBaseDto;
 import com.tplate.layers.access.dtos.user.UserNewDto;
+import com.tplate.layers.access.specifications.UserSpecification;
 import com.tplate.layers.business.exceptions.auth.EmailExistException;
 import com.tplate.layers.business.exceptions.auth.EmailNotFoundException;
 import com.tplate.layers.business.exceptions.role.RoleNotExistException;
@@ -130,8 +131,8 @@ public class UserService {
     }
 
     @Transactional
-    public Page findAll(Pageable pageable) {
-        return this.userRepository.findAll(pageable);
+    public Page find(Pageable pageable, UserSpecification specification) {
+        return this.userRepository.findAll(specification, pageable);
     }
 
     @Transactional

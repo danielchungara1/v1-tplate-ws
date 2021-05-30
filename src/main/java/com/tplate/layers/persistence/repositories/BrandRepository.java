@@ -1,7 +1,10 @@
 package com.tplate.layers.persistence.repositories;
 
 import com.tplate.layers.persistence.models.Brand;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -9,4 +12,9 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     Boolean existsByName(String name);
 
+    @Query("select p from Brand p " +
+            "where LOWER(p.name) like %:text% " +
+            "or    LOWER(p.description) like %:text% " +
+            "or    LOWER(p.title) like %:text%")
+    Page findAll(Pageable pageable, String text);
 }
