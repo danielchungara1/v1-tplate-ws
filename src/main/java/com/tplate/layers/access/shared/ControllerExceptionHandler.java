@@ -130,7 +130,7 @@ public class ControllerExceptionHandler {
     public ResponseSimpleDto allExceptionHandler(Exception e) {
         e.printStackTrace();
         return ResponseSimpleDto.builder()
-                .message("Internal server error.")
+                .message("Unexpected Error.")
                 .details(e.getMessage())
                 .build();
     }
