@@ -1,6 +1,7 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.product.ProductDto;
+import com.tplate.layers.access.specifications.ProductSpecification;
 import com.tplate.layers.business.exceptions.brand.BrandNotExistException;
 import com.tplate.layers.business.exceptions.category.CategoryNotExistException;
 import com.tplate.layers.business.exceptions.product.ProductNameExistException;
@@ -11,6 +12,8 @@ import com.tplate.layers.persistence.models.Product;
 import com.tplate.layers.persistence.repositories.ProductRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +43,11 @@ public class ProductService {
         return this.repository.findById(id)
                 .orElseThrow(() -> new ProductNotExistException(id));
 
+    }
+
+    @Transactional
+    public Page<Product> findAll(Pageable pageable, ProductSpecification specification) {
+        return this.repository.findAll(specification, pageable);
     }
 
     @Transactional
