@@ -38,7 +38,7 @@ class UserControllerTest extends ContainersTests {
                 .thenReturn(existingUser);
 
 
-        UserResponseDto userResponseDto = (UserResponseDto) userController.getUserById(EXISTING_USER).getData();
+        UserResponseDto userResponseDto = (UserResponseDto) userController.getById(EXISTING_USER).getData();
 
         assertThat(userResponseDto.getId()).isEqualTo(existingUser.getId());
         assertThat(userResponseDto.getUsername()).isEqualTo(existingUser.getUsername());
