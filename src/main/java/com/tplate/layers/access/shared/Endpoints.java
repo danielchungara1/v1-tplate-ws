@@ -8,6 +8,7 @@ public class Endpoints {
     public static final String AUTH_LOGIN = AUTH + "/login";
     public static final String AUTH_RESET_CODE = AUTH + "/password/reset-code";
     public static final String AUTH_UPDATE_PASS = AUTH + "/password";
+    public static final String AUTH_SIGNUP = AUTH + "/sign-up";
 
     public static final String USER = BASE_PATH + "/users";
     public static final String USER_NEW = USER + "/new-user";
@@ -47,6 +48,7 @@ public class Endpoints {
     public static final String PRODUCT_READ_ONE = PRODUCT + "/{id}";
     public static final String PRODUCT_DELETE = PRODUCT + "/{id}";
     public static final String PRODUCT_READ_ALL = PRODUCT + "/all";
+
 
 
 }

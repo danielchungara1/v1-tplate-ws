@@ -2,11 +2,10 @@ package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.ResponseDto;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
-import com.tplate.layers.access.dtos.auth.LoginDto;
-import com.tplate.layers.access.dtos.auth.LoginResponseDto;
-import com.tplate.layers.access.dtos.auth.ResetPasswordStep1Dto;
-import com.tplate.layers.access.dtos.auth.ResetPasswordStep2Dto;
+import com.tplate.layers.access.dtos.auth.*;
 import com.tplate.layers.business.exceptions.auth.*;
+import com.tplate.layers.business.exceptions.role.RoleNotExistException;
+import com.tplate.layers.business.exceptions.user.UsernameExistException;
 import com.tplate.layers.business.services.authService.AuthService;
 import com.tplate.layers.access.shared.Endpoints;
 import com.tplate.config.security.jwt.JwtCustomException;
@@ -60,4 +59,15 @@ public class AuthController {
                 .build();
     }
 
+    // Sign Up
+    @PostMapping(Endpoints.AUTH_SIGNUP)
+    public ResponseSimpleDto signUp(@RequestBody @Valid SignUpDto dto) throws UsernameExistException, EmailExistException, RoleNotExistException {
+
+        this.authService.signUp(dto);
+
+        return ResponseSimpleDto.builder()
+                .message("User signed up.")
+                .details("User signed up successfully.")
+                .build();
+    }
 }

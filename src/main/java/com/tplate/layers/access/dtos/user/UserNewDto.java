@@ -1,10 +1,9 @@
 package com.tplate.layers.access.dtos.user;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
