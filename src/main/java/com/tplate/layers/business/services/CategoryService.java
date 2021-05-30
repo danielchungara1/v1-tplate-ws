@@ -1,6 +1,8 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.category.CategoryDto;
+import com.tplate.layers.access.specifications.CategorySpecification;
+import com.tplate.layers.access.specifications.RoleSpecification;
 import com.tplate.layers.business.exceptions.category.CategoryNameExistException;
 import com.tplate.layers.business.exceptions.category.CategoryNotExistException;
 import com.tplate.layers.business.exceptions.category.CategorySelfReferenceException;
@@ -9,6 +11,8 @@ import com.tplate.layers.persistence.models.Category;
 import com.tplate.layers.persistence.repositories.CategoryRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -144,4 +148,8 @@ public class CategoryService {
 
     }
 
+    @Transactional
+    public Page find(Pageable pageable, CategorySpecification specification) {
+        return this.repository.findAll(specification, pageable);
+    }
 }
