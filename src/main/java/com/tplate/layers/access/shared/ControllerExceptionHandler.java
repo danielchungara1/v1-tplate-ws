@@ -3,6 +3,7 @@ package com.tplate.layers.access.shared;
 import com.tplate.layers.access.dtos.ResponseSimpleDto;
 import com.tplate.layers.business.exceptions.BusinessException;
 import com.tplate.layers.business.exceptions.BusinessRuntimeException;
+import com.tplate.shared.UtilString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -83,9 +84,10 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseSimpleDto httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException e) {
         log.error(e.getMessage());
+        final String message = "Invalid JSON body.";
         return ResponseSimpleDto.builder()
-                .message("Invalid JSON body.")
-                .details( e.getMessage())
+                .message(message)
+                .details( UtilString.truncateBySubstringOrElseReturnDefaultString(e.getMessage(), "(class", message))
                 .build();
     }
 
@@ -96,7 +98,7 @@ public class ControllerExceptionHandler {
         log.error(e.getMessage());
         return ResponseSimpleDto.builder()
                 .message(e.hasErrors() ? e.getAllErrors().get(0).getDefaultMessage() :"Method Argument invalid.")
-                .details(e.getMessage())
+                .details(UtilString.truncateBySubstringOrElseReturnDefaultString(e.getMessage(), "in public", "Method Argument invalid."))
                 .build();
     }
 
@@ -128,7 +130,7 @@ public class ControllerExceptionHandler {
     public ResponseSimpleDto allExceptionHandler(Exception e) {
         e.printStackTrace();
         return ResponseSimpleDto.builder()
-                .message("Internal server error.")
+                .message("Unexpected Error.")
                 .details(e.getMessage())
                 .build();
     }

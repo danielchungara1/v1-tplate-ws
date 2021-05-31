@@ -1,6 +1,7 @@
 package com.tplate.layers.business.services;
 
 import com.tplate.layers.access.dtos.role.RoleDto;
+import com.tplate.layers.access.specifications.RoleSpecification;
 import com.tplate.layers.business.exceptions.permission.PermissionNotExistException;
 import com.tplate.layers.business.exceptions.role.*;
 import com.tplate.layers.business.shared.RolesConfig;
@@ -9,6 +10,8 @@ import com.tplate.layers.persistence.models.Role;
 import com.tplate.layers.persistence.repositories.RoleRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +23,7 @@ import java.util.List;
 public class RoleService {
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleRepository repository;
 
     @Autowired
     PermissionService permissionService;
@@ -30,21 +33,21 @@ public class RoleService {
 
         if (id == null) { RoleNotExistException.throwsException(id); }
 
-        return this.roleRepository.findById(id)
+        return this.repository.findById(id)
                 .orElseThrow(() -> new RoleNotExistException(id));
 
     }
 
     @Transactional
     public List<Role> findAll() {
-        return this.roleRepository.findAll();
+        return this.repository.findAll();
     }
 
     @Transactional(rollbackFor = Exception.class)
     public Role saveModel(RoleDto dto) throws RoleNameExistException, RoleWithoutPermissionsException, PermissionNotExistException {
 
         // Role Name
-        if (this.roleRepository.existsByName(dto.getName())) {
+        if (this.repository.existsByName(dto.getName())) {
             RoleNameExistException.throwsException(dto.getName());
         }
 
@@ -60,7 +63,7 @@ public class RoleService {
         Role role = this.getModelById(roleId);
 
         // Name False Positive.
-        if ( !this.roleRepository.existsByName(dto.getName()) ) {
+        if ( !this.repository.existsByName(dto.getName()) ) {
             role.setName(dto.getName());
         } else {
             if (role.getName().equals(dto.getName())) {
@@ -90,7 +93,7 @@ public class RoleService {
         }
         role.setPermissions(permissions);
 
-        return this.roleRepository.save(role);
+        return this.repository.save(role);
 
     }
 
@@ -98,7 +101,7 @@ public class RoleService {
     public void deleteModelById(Long id) throws RoleNotExistException, RoleMustNotBeDeletedException {
 
         // Validations
-        if (!this.roleRepository.existsById(id)) {
+        if (!this.repository.existsById(id)) {
             RoleNotExistException.throwsException(id);
         }
         // THE ADMIN AND VISUALIZER ROLE MUSTN'T BE DELETED
@@ -110,23 +113,27 @@ public class RoleService {
         }
 
 
-        if (this.roleRepository.roleIdHasAnyUserAssigned(id)) {
-            this.roleRepository.assignRoleVisualizerAllUserThatHaveRoleId(id);
+        if (this.repository.roleIdHasAnyUserAssigned(id)) {
+            this.repository.assignRoleVisualizerAllUserThatHaveRoleId(id);
         }
-        this.roleRepository.deleteById(id);
+        this.repository.deleteById(id);
 
     }
 
     @Transactional
     public Role getModelByName(String name) throws RoleNameNotExistException {
 
-        if (!this.roleRepository.existsByName(name)) {
+        if (!this.repository.existsByName(name)) {
             RoleNameNotExistException.throwsException(name);
         }
 
-        return this.roleRepository.getByName(name);
+        return this.repository.getByName(name);
 
     }
 
 
+    @Transactional
+    public Page find(Pageable pageable, RoleSpecification specification) {
+        return this.repository.findAll(specification, pageable);
+    }
 }

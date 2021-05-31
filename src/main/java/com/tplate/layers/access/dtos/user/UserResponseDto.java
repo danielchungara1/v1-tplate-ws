@@ -16,4 +16,11 @@ public class UserResponseDto {
     private String phone;
     private String username;
     private RoleResponseDto role;
+
+//    @Data
+//    private static class UserRoleDto {
+//        private Long id;
+//        private String name;
+//        private String description;
+//    }
 }

@@ -1,8 +1,10 @@
 package com.tplate.layers.access.controllers;
 
 import com.tplate.layers.access.dtos.user.*;
+import com.tplate.layers.access.specifications.UserSpecification;
 import com.tplate.layers.business.exceptions.auth.EmailExistException;
 import com.tplate.layers.business.exceptions.role.RoleNotExistException;
+import com.tplate.layers.business.exceptions.user.UserCannotBeDeleteException;
 import com.tplate.layers.business.exceptions.user.UserNotExistException;
 import com.tplate.layers.business.exceptions.user.UsernameExistException;
 import com.tplate.layers.access.dtos.ResponseDto;
@@ -25,7 +27,7 @@ public class UserController {
 
     @PostMapping(value = Endpoints.USER_NEW)
     @PreAuthorize("hasAuthority('CREATE_USERS')")
-    public ResponseDto createUser(@RequestBody(required = true) @Valid UserNewDto userDto) throws RoleNotExistException, UsernameExistException, EmailExistException {
+    public ResponseDto create(@RequestBody(required = true) @Valid UserNewDto userDto) throws RoleNotExistException, UsernameExistException, EmailExistException {
 
         return ResponseDto.builder()
                 .message("User created.")
@@ -37,7 +39,7 @@ public class UserController {
 
     @PutMapping(value = Endpoints.USER_UPDATE)
     @PreAuthorize("hasAuthority('UPDATE_USERS')")
-    public ResponseDto updateUser(@RequestBody(required = true) @Valid UserUpdateDto userDto, @PathVariable Long id) throws EmailExistException, UserNotExistException, RoleNotExistException, UsernameExistException {
+    public ResponseDto update(@RequestBody(required = true) @Valid UserUpdateDto userDto, @PathVariable Long id) throws EmailExistException, UserNotExistException, RoleNotExistException, UsernameExistException {
         return ResponseDto.builder()
                 .message("User updated.")
                 .details("User was updated successfully.")
@@ -48,7 +50,7 @@ public class UserController {
 
     @GetMapping(value = Endpoints.USER_READ_ONE)
     @PreAuthorize("hasAuthority('READ_USERS')")
-    public ResponseDto getUserById(@PathVariable Long id) throws UserNotExistException {
+    public ResponseDto getById(@PathVariable Long id) throws UserNotExistException {
         return ResponseDto.builder()
                 .message("User data.")
                 .details("User data found successfully.")
@@ -58,7 +60,7 @@ public class UserController {
 
     @DeleteMapping(value = Endpoints.USER_DELETE)
     @PreAuthorize("hasAuthority('DELETE_USERS')")
-    public ResponseSimpleDto deleteUser(@PathVariable Long id) throws UserNotExistException {
+    public ResponseSimpleDto delete(@PathVariable Long id) throws UserNotExistException, UserCannotBeDeleteException {
         this.userService.deleteModelById(id);
         return ResponseSimpleDto.builder()
                 .message("User deleted.")
@@ -69,18 +71,18 @@ public class UserController {
     @GetMapping(value = Endpoints.USER)
     @PreAuthorize("hasAuthority('READ_USERS')")
     @Transactional
-    public ResponseDto findUsers(Pageable pageable) {
+    public ResponseDto find(Pageable pageable, UserSpecification specification) {
         return ResponseDto.builder()
                 .message("User data.")
                 .details("User data found successfully.")
-                .data(this.userService.findAll(pageable), UserPageDto.class)
+                .data(this.userService.find(pageable, specification), UserPageDto.class)
                 .build();
     }
 
     @GetMapping(value = Endpoints.USER_READ_ALL)
     @PreAuthorize("hasAuthority('READ_USERS')")
     @Transactional
-    public ResponseDto findUsersAll() {
+    public ResponseDto findAll() {
 
         return ResponseDto.builder()
                 .message("All users fetched.")
@@ -88,6 +90,5 @@ public class UserController {
                 .data(this.userService.findAll(), UserResponseDto[].class)
                 .build();
     }
-
 
 }
