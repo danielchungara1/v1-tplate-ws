@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  api:
+    image: danielchungara1/tplate:latest
+    build:
+      context: .
+    container_name: tplate-api
+    depends_on:
+      - db
+    ports:
+      - "80:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tplate?serverTimezone=America/Argentina/Buenos_Aires
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+  db:
+    image: postgres:13.3-alpine
+    container_name: tplate-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_tplate:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: tplate
+      PGDATA: /var/lib/postgresql/data
+volumes:
+  db_tplate: {}
