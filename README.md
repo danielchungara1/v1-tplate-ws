@@ -2,7 +2,7 @@
 ![](https://github.com/danielchungara1/v1-tplate-ws/workflows/tests/badge.svg)
 
 ## Demo
-- https://v1-tplate-ws.herokuapp.com
+- http://tplate-ws.tk
 - Credentials
     - username: administrador 
     - password: tplate
