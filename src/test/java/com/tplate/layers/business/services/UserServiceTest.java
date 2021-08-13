@@ -2,6 +2,7 @@ package com.tplate.layers.business.services;
 
 import com.tplate.ContainersTests;
 import com.tplate.layers.access.dtos.user.UserNewDto;
+import com.tplate.layers.business.exceptions.BusinessException;
 import com.tplate.layers.business.exceptions.auth.EmailExistException;
 import com.tplate.layers.business.exceptions.role.RoleNotExistException;
 import com.tplate.layers.business.exceptions.user.UserCannotBeDeleteException;
@@ -143,7 +144,7 @@ class UserServiceTest extends ContainersTests {
     }
 
     @Test
-    void deleteModelById_withExistingId() throws UserNotExistException, UserCannotBeDeleteException {
+    void deleteModelById_withExistingId() throws UserNotExistException, UserCannotBeDeleteException, BusinessException {
 
         User userCreated = this.userRepository.save(
                 User.builder()

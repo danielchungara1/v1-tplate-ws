@@ -2,6 +2,7 @@ package com.tplate.layers.business.services;
 
 import com.tplate.ContainersTests;
 import com.tplate.layers.access.dtos.user.UserUpdateDto;
+import com.tplate.layers.business.exceptions.BusinessException;
 import com.tplate.layers.business.exceptions.auth.EmailExistException;
 import com.tplate.layers.business.exceptions.role.RoleNotExistException;
 import com.tplate.layers.business.exceptions.user.UserNotExistException;
@@ -89,7 +90,7 @@ class UserServiceUpdateTest extends ContainersTests {
     }
 
     @Test
-    void updateModel_withExistingUserValid() throws EmailExistException, UsernameExistException, RoleNotExistException, UserNotExistException {
+    void updateModel_withExistingUserValid() throws EmailExistException, UsernameExistException, RoleNotExistException, UserNotExistException, BusinessException {
 
         UserUpdateDto userDto = new UserUpdateDto();
         userDto.setUsername(UUID.randomUUID().toString());
