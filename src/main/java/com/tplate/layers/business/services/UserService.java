@@ -3,6 +3,7 @@ package com.tplate.layers.business.services;
 import com.tplate.layers.access.dtos.user.UserBaseDto;
 import com.tplate.layers.access.dtos.user.UserNewDto;
 import com.tplate.layers.access.specifications.UserSpecification;
+import com.tplate.layers.business.exceptions.BusinessException;
 import com.tplate.layers.business.exceptions.auth.EmailExistException;
 import com.tplate.layers.business.exceptions.auth.EmailNotFoundException;
 import com.tplate.layers.business.exceptions.role.RoleNotExistException;
@@ -60,9 +61,12 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public User updateModel(UserUpdateDto dto, Long id) throws UserNotExistException, EmailExistException, UsernameExistException, RoleNotExistException {
+    public User updateModel(UserUpdateDto dto, Long id) throws UserNotExistException, EmailExistException, UsernameExistException, RoleNotExistException, BusinessException {
 
         User user = this.getModelById(id);
+
+        // If user is the admin the operation is not permitted.
+        this.adminCannotBeAltered(id, "It is not permitted update the admin profile.");
 
         // Password Optional
         if (dto.getPassword() != null && !dto.getPassword().equals("")) {
@@ -106,7 +110,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteModelById(Long id) throws UserNotExistException, UserCannotBeDeleteException {
+    public void deleteModelById(Long id) throws UserNotExistException, UserCannotBeDeleteException, BusinessException {
 
         if (!this.userRepository.existsById(id)) {
             UserNotExistException.throwsException(id);
@@ -147,5 +151,11 @@ public class UserService {
         }
 
         return this.userRepository.getByEmail(email);
+    }
+
+    private void adminCannotBeAltered(Long id, String msg) throws BusinessException {
+        if (id.equals(1L)) {
+            throw new BusinessException(msg, msg);
+        }
     }
 }
